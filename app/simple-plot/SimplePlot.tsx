@@ -1,20 +1,22 @@
+"use client"
+
 import {OrthographicCamera} from "@react-three/drei"
 import {useFrame, useThree} from "@react-three/fiber"
 import {useRef} from "react"
 
-import type {NextPage} from "next"
+import type {ReactElement} from "react"
 import type {ShaderMaterial} from "three"
 
-import CustomShaderMaterial from "./CustomShaderMaterial"
+import SimplePlotMaterial from "./SimplePlotMaterial"
 
-const ShaderPlane: NextPage = () => {
+const SimplePlot = (): ReactElement | null => {
 	const viewport = useThree((state) => state.viewport)
 
 	// Update time uniform
-	const shaderMaterialRef = useRef<ShaderMaterial | null>(null)
+	const ref = useRef<ShaderMaterial | null>(null)
 	useFrame((state, delta) => {
-		if (!shaderMaterialRef.current) return
-		shaderMaterialRef.current.uniforms.time.value += delta
+		if (!ref.current || !ref.current.uniforms.time) return
+		ref.current.uniforms.time.value += delta
 	})
 
 	return (
@@ -23,9 +25,9 @@ const ShaderPlane: NextPage = () => {
 
 			<mesh scale={[viewport.width, viewport.height, 1]}>
 				<planeGeometry />
-				<customShaderMaterial
-					key={CustomShaderMaterial.key}
-					ref={shaderMaterialRef}
+				<simplePlotMaterial
+					key={SimplePlotMaterial.key}
+					ref={ref}
 					time={0}
 					pixelSizeX={1 / viewport.width}
 					pixelSizeY={1 / viewport.height}
@@ -35,4 +37,4 @@ const ShaderPlane: NextPage = () => {
 	)
 }
 
-export default ShaderPlane
+export default SimplePlot

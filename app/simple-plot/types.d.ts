@@ -1,7 +1,7 @@
 declare global {
 	namespace JSX {
 		interface IntrinsicElements {
-			customShaderMaterial: {
+			simplePlotMaterial: {
 				time: number
 				pixelSizeX: number
 				pixelSizeY: number

@@ -3,7 +3,7 @@ import {extend} from "@react-three/fiber"
 
 import glsl from "helpers/glsl"
 
-const CustomShaderMaterial = shaderMaterial(
+const SimplePlotMaterial = shaderMaterial(
 	{time: 0, pixelSizeX: 1, pixelSizeY: 1},
 	glsl`
     out vec2 f_uv;
@@ -47,6 +47,6 @@ const CustomShaderMaterial = shaderMaterial(
   `
 )
 
-extend({CustomShaderMaterial})
+extend({SimplePlotMaterial})
 
-export default CustomShaderMaterial
+export default SimplePlotMaterial

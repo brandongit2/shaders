@@ -5,14 +5,14 @@ import {WebGLRenderer} from "three"
 
 import type {ReactElement} from "react"
 
-import ShaderPlane from "./ShaderPlane"
+import Red from "./Red"
 
-const ThreeContainer = (): ReactElement | null => {
+const RedPage = (): ReactElement | null => {
 	return (
 		<Canvas flat linear gl={(canvas) => new WebGLRenderer({canvas, context: canvas.getContext(`webgl2`) ?? undefined})}>
-			<ShaderPlane />
+			<Red />
 		</Canvas>
 	)
 }
 
-export default ThreeContainer
+export default RedPage

@@ -18,6 +18,7 @@
 		"incremental": true,
 		"strictNullChecks": true,
 		"baseUrl": ".",
+		"noUncheckedIndexedAccess": true,
 		"paths": {
 			"~/*": ["app/*"]
 		},
