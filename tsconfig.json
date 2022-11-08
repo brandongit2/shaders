@@ -19,9 +19,10 @@
 		"strictNullChecks": true,
 		"baseUrl": ".",
 		"paths": {
-			"~/*": ["./src/*"]
-		}
+			"~/*": ["app/*"]
+		},
+		"plugins": [{"name": "next"}]
 	},
-	"include": ["**/*.ts", "**/*.tsx"],
+	"include": ["**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
 	"exclude": ["node_modules"]
 }

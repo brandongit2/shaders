@@ -2,12 +2,12 @@ import {OrthographicCamera} from "@react-three/drei"
 import {useFrame, useThree} from "@react-three/fiber"
 import {useRef} from "react"
 
-import type {ReactElement} from "react"
+import type {NextPage} from "next"
 import type {ShaderMaterial} from "three"
 
-import CustomShaderMaterial from "~/components/CustomShaderMaterial"
+import CustomShaderMaterial from "./CustomShaderMaterial"
 
-const App = (): ReactElement | null => {
+const ShaderPlane: NextPage = () => {
 	const viewport = useThree((state) => state.viewport)
 
 	// Update time uniform
@@ -35,4 +35,4 @@ const App = (): ReactElement | null => {
 	)
 }
 
-export default App
+export default ShaderPlane

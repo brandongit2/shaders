@@ -1,7 +1,7 @@
 import {shaderMaterial} from "@react-three/drei"
 import {extend} from "@react-three/fiber"
 
-import glsl from "~/helpers/glsl"
+import glsl from "helpers/glsl"
 
 const CustomShaderMaterial = shaderMaterial(
 	{time: 0, pixelSizeX: 1, pixelSizeY: 1},
