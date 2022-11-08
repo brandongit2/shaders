@@ -24,7 +24,8 @@ const App = (): ReactElement | null => {
 					key={CustomShaderMaterial.key}
 					ref={shaderMaterialRef}
 					time={0}
-					pixelSize={1 / viewport.width}
+					pixelSizeX={1 / viewport.width}
+					pixelSizeY={1 / viewport.height}
 				/>
 			</mesh>
 		</>
