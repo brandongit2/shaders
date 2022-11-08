@@ -20,7 +20,12 @@ const App = (): ReactElement | null => {
 
 			<mesh scale={[viewport.width, viewport.height, 1]}>
 				<planeGeometry />
-				<customShaderMaterial key={CustomShaderMaterial.key} ref={shaderMaterialRef} />
+				<customShaderMaterial
+					key={CustomShaderMaterial.key}
+					ref={shaderMaterialRef}
+					time={0}
+					pixelSize={1 / viewport.width}
+				/>
 			</mesh>
 		</>
 	)
