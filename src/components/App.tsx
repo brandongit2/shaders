@@ -1,7 +1,10 @@
 import {OrthographicCamera} from "@react-three/drei"
 import {useFrame, useThree} from "@react-three/fiber"
-import {ReactElement, useRef} from "react"
-import {ShaderMaterial} from "three"
+import {useRef} from "react"
+
+import type {ReactElement} from "react"
+import type {ShaderMaterial} from "three"
+
 import CustomShaderMaterial from "~/components/CustomShaderMaterial"
 
 const App = (): ReactElement | null => {

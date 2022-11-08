@@ -1,6 +1,6 @@
 import {shaderMaterial} from "@react-three/drei"
-import {extend, ReactThreeFiber} from "@react-three/fiber"
-import {ShaderMaterial, Texture} from "three"
+import {extend} from "@react-three/fiber"
+
 import glsl from "~/helpers/glsl"
 
 const CustomShaderMaterial = shaderMaterial(
@@ -48,17 +48,5 @@ const CustomShaderMaterial = shaderMaterial(
 )
 
 extend({CustomShaderMaterial})
-
-declare global {
-	namespace JSX {
-		interface IntrinsicElements {
-			customShaderMaterial: {
-				time: number
-				pixelSizeX: number
-				pixelSizeY: number
-			} & JSX.IntrinsicElements["shaderMaterial"]
-		}
-	}
-}
 
 export default CustomShaderMaterial
