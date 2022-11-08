@@ -21,7 +21,7 @@ const CustomShaderMaterial = shaderMaterial(
     uniform float pixelSizeY;
 
     float fn(float x) {
-      return pow(1.5 * x, 19.0) + sin(x * 5.0) / 5.0;
+      return pow(x, 2.0) + sin((x + time) * 5.0) / 5.0 + 0.1;
     }
 
     const vec3 plotColor = vec3(0.0, 1.0, 0.0);
