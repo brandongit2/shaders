@@ -14,7 +14,6 @@ const Nav = (): ReactElement | null => {
 
 	useEffect(() => {
 		const onClick = (evt: MouseEvent) => {
-			console.log(evt.target)
 			if (!evt.target || !(evt.target as HTMLElement).closest(`#nav-box`)) {
 				setIsExpanded(false)
 			}
@@ -25,10 +24,7 @@ const Nav = (): ReactElement | null => {
 	}, [])
 
 	return (
-		<div
-			id="nav-box"
-			className="relative z-10 m-8 rounded-md border border-white/10 bg-black/30 text-white backdrop-blur-md"
-		>
+		<div id="nav-box" className="rounded-md border border-white/10 bg-black/30 text-white backdrop-blur-md">
 			<div className="p-4">
 				<button
 					type="button"
