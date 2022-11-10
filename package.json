@@ -20,6 +20,7 @@
 	},
 	"dependencies": {
 		"@next/font": "13.0.2",
+		"@radix-ui/react-scroll-area": "1.0.1",
 		"@react-hook/resize-observer": "1.2.6",
 		"@types/katex": "0.14.0",
 		"@types/node": "18.11.9",

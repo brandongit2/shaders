@@ -16,6 +16,8 @@ const RootLayout = ({children}: Props): ReactElement | null => {
 		<html lang="en" className="h-full">
 			<head>
 				<title>Shaders!!</title>
+
+				<meta name="viewport" content="width=device-width, initial-scale=1" />
 			</head>
 			<body className={clsx(font.className, `h-full bg-[#330D6B]`)}>{children}</body>
 		</html>

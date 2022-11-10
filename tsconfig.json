@@ -20,7 +20,7 @@
 		"baseUrl": ".",
 		"noUncheckedIndexedAccess": true,
 		"paths": {
-			"~/*": ["app/*"]
+			"~/*": ["./*"]
 		},
 		"plugins": [{"name": "next"}]
 	},
