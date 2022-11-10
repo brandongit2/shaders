@@ -4,10 +4,12 @@ import type {ReactElement, ReactNode} from "react"
 
 type Props = {
 	children: ReactNode
+	day: number
 	shaderName: string
+	date: string
 }
 
-const Overlay = ({children, shaderName}: Props): ReactElement | null => {
+const Overlay = ({children, day, shaderName, date}: Props): ReactElement | null => {
 	return (
 		<div className="grid h-full items-end text-white">
 			<div className="absolute inset-0">{children}</div>
@@ -23,7 +25,10 @@ const Overlay = ({children, shaderName}: Props): ReactElement | null => {
 
 			<div className="relative z-10 m-8 mt-0 flex items-end justify-between">
 				<div className="translate-y-1">
-					<h1 className="mb-1 text-xl font-bold">{shaderName}</h1>
+					<h1 className="mb-1 text-xl font-bold">
+						<span className="font-normal opacity-80">Day {day} | </span>
+						{shaderName}
+					</h1>
 					<p className="text-sm underline">See description + breakdown</p>
 				</div>
 
@@ -32,7 +37,7 @@ const Overlay = ({children, shaderName}: Props): ReactElement | null => {
 					<Link href="https://www.brandontsang.net/" target="_blank" className="underline">
 						Brandon Tsang
 					</Link>
-					.
+					{` `}on {date}.
 				</p>
 			</div>
 		</div>
