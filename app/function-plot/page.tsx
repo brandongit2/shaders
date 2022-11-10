@@ -14,7 +14,7 @@ const FunctionPlotPage = (): ReactElement | null => {
 	return (
 		<div
 			className={clsx(
-				`absolute inset-0 overflow-hidden text-white transition-[border-radius,inset] duration-1000`,
+				`absolute inset-0 overflow-hidden text-white shadow-lg shadow-black/50 transition-[border-radius,inset] duration-1000`,
 				areDetailsOpen && `inset-8 rounded-xl`
 			)}
 		>

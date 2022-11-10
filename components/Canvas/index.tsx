@@ -106,10 +106,8 @@ const Canvas = ({fragmentShader: fragmentShaderSource}: Props): ReactElement | n
 
 			// Uniforms
 			gl.uniform1f(gl.getUniformLocation(shaderProgram, `time`), time * 0.001)
-			gl.uniform1f(
-				gl.getUniformLocation(shaderProgram, `aspectRatio`),
-				((contentRect.width || 0) * window.devicePixelRatio) / ((contentRect.height || 0) * window.devicePixelRatio)
-			)
+			gl.uniform1f(gl.getUniformLocation(shaderProgram, `pixelSizeX`), 1 / contentRect.width / devicePixelRatio)
+			gl.uniform1f(gl.getUniformLocation(shaderProgram, `pixelSizeY`), 1 / contentRect.height / devicePixelRatio)
 
 			// Draw the rectangle
 			gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
