@@ -5,6 +5,8 @@ type DescriptionStore = {
 	setSectionInfo: (sectionInfo: {top: number; bottom: number}[]) => void
 	descriptionPadding: number
 	setDescriptionPadding: (descriptionPadding: number) => void
+	scrollProgress: number
+	setScrollProgress: (scrollProgress: number) => void
 }
 
 const useDescriptionStore = create<DescriptionStore>((set) => ({
@@ -12,6 +14,8 @@ const useDescriptionStore = create<DescriptionStore>((set) => ({
 	setSectionInfo: (sectionInfo) => set({sectionInfo}),
 	descriptionPadding: 0,
 	setDescriptionPadding: (descriptionPadding) => set({descriptionPadding}),
+	scrollProgress: 0,
+	setScrollProgress: (scrollProgress) => set({scrollProgress}),
 }))
 
 export default useDescriptionStore

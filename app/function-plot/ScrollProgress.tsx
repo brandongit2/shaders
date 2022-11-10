@@ -4,12 +4,8 @@ import type {ReactElement} from "react"
 
 import useDescriptionStore from "./descriptionStore"
 
-type Props = {
-	scrollProgress: number
-}
-
-const ScrollProgress = ({scrollProgress}: Props): ReactElement | null => {
-	const {sectionInfo} = useDescriptionStore()
+const ScrollProgress = (): ReactElement | null => {
+	const {sectionInfo, scrollProgress} = useDescriptionStore()
 
 	return (
 		<div className="relative h-full max-h-72 w-0">

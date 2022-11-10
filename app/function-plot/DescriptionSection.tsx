@@ -3,12 +3,15 @@ import {useCallback, useState} from "react"
 
 import type {ReactElement, ReactNode} from "react"
 
+import useDescriptionStore from "./descriptionStore"
+
 type Props = {
 	children: ReactNode
-	scrollProgress: number
 }
 
-const DescriptionSection = ({children, scrollProgress}: Props): ReactElement | null => {
+const DescriptionSection = ({children}: Props): ReactElement | null => {
+	const {scrollProgress} = useDescriptionStore()
+
 	const [sectionInfo, setSectionInfo] = useState<{top: number; bottom: number}>({top: 0, bottom: 0})
 	const sectionRef = useCallback((section: HTMLDivElement | null) => {
 		if (!section) return

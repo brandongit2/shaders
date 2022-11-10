@@ -12,26 +12,26 @@ import Katex from "~/components/Katex"
 // eslint-disable-next-line @typescript-eslint/quotes
 const joan = Joan({weight: "400"})
 
-type Props = {
-	scrollProgress: number
-	setScrollProgress: React.Dispatch<React.SetStateAction<number>>
-}
-
-const Description = ({scrollProgress, setScrollProgress}: Props): ReactElement | null => {
-	const {setSectionInfo, descriptionPadding, setDescriptionPadding} = useDescriptionStore()
+const Description = (): ReactElement | null => {
+	const {setSectionInfo, descriptionPadding, setDescriptionPadding, setScrollProgress} = useDescriptionStore()
 	useEffect(() => {
 		const scroller = document.querySelector(`[data-scroller]`) as HTMLElement
 
 		setDescriptionPadding(scroller.clientHeight / 2)
+	}, [setDescriptionPadding])
 
-		const sections = Array.from(document.querySelectorAll(`[data-description-section]`))
+	useEffect(() => {
+		if (descriptionPadding === 0) return
+		const scroller = document.querySelector(`[data-scroller]`) as HTMLElement
+
+		const sections: HTMLElement[] = Array.from(document.querySelectorAll(`[data-description-section]`))
 		setSectionInfo(
-			sections.map((section: HTMLElement) => ({
+			sections.map((section) => ({
 				top: section.offsetTop / scroller.scrollHeight,
 				bottom: (section.offsetTop + section.offsetHeight) / scroller.scrollHeight,
 			}))
 		)
-	}, [setSectionInfo, setDescriptionPadding])
+	}, [descriptionPadding, setSectionInfo])
 
 	return (
 		<ScrollArea.Root className="mr-2 overflow-hidden">
@@ -45,7 +45,7 @@ const Description = ({scrollProgress, setScrollProgress}: Props): ReactElement |
 				data-scroller
 			>
 				<div style={{height: `${descriptionPadding}px`}} />
-				<DescriptionSection scrollProgress={scrollProgress}>
+				<DescriptionSection>
 					<p className={joan.className}>
 						This is a plot of the function <Katex>{`x^2 + \\frac{1}{5}\\sin(5x + t)`}</Katex> on the domain{` `}
 						<Katex>{`x \\in [0, 1]`}</Katex> and range{` `}
@@ -56,7 +56,7 @@ const Description = ({scrollProgress, setScrollProgress}: Props): ReactElement |
 					<br />
 					<p>To make it was more complicated than it seems. Let&apos;s explore how I did it.</p>
 				</DescriptionSection>
-				<DescriptionSection scrollProgress={scrollProgress}>
+				<DescriptionSection>
 					<p>
 						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas ut neque nisl. Sed ac quam lorem. Ut nisi
 						nibh, tincidunt ac enim in, suscipit vestibulum purus. Integer rhoncus elit non ornare commodo. Integer
@@ -67,7 +67,7 @@ const Description = ({scrollProgress, setScrollProgress}: Props): ReactElement |
 						ligula tincidunt mollis tempor tempor nibh. Nulla eget nisi quis purus scelerisque tincidunt.
 					</p>
 				</DescriptionSection>
-				<DescriptionSection scrollProgress={scrollProgress}>
+				<DescriptionSection>
 					<p>
 						Proin ligula urna, eleifend non tincidunt id, hendrerit eu felis. Ut vestibulum quis elit sed condimentum.
 						Duis justo eros, elementum eget mollis nec, interdum id elit. Suspendisse libero leo, placerat quis nunc et,
@@ -76,7 +76,7 @@ const Description = ({scrollProgress, setScrollProgress}: Props): ReactElement |
 						odio vitae lorem accumsan ultricies eu non ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 					</p>
 				</DescriptionSection>
-				<DescriptionSection scrollProgress={scrollProgress}>
+				<DescriptionSection>
 					<p>
 						Pellentesque ut orci at quam egestas dignissim. Vivamus ut erat placerat, dignissim orci sed, tempor lacus.
 						Morbi pellentesque dui velit, eu blandit metus hendrerit in. Interdum et malesuada fames ac ante ipsum
@@ -87,7 +87,7 @@ const Description = ({scrollProgress, setScrollProgress}: Props): ReactElement |
 						gravida ac eros vel suscipit.
 					</p>
 				</DescriptionSection>
-				<DescriptionSection scrollProgress={scrollProgress}>
+				<DescriptionSection>
 					<p>
 						Aenean aliquam quam et neque ullamcorper suscipit. Ut pulvinar, nulla non placerat sagittis, velit nulla
 						consequat sem, eu varius leo sem at ipsum. Donec et laoreet nunc. Maecenas quis nunc non sem varius mollis.

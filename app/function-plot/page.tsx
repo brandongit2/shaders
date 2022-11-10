@@ -12,7 +12,6 @@ import ScrollProgress from "./ScrollProgress"
 
 const FunctionPlotPage = (): ReactElement | null => {
 	const [areDetailsOpen, setAreDetailsOpen] = useState(false)
-	const [scrollProgress, setScrollProgress] = useState(0)
 
 	return (
 		<div className="mx-auto grid h-full max-w-4xl grid-rows-[min(100vw,50vh)_auto] gap-6 p-2 text-white md:p-6 lg:grid-cols-[1fr_minmax(30rem,1fr)] lg:grid-rows-1">
@@ -27,9 +26,9 @@ const FunctionPlotPage = (): ReactElement | null => {
 
 			<div className="grid h-full grid-cols-[2rem_1fr] overflow-hidden">
 				<div className="grid place-items-center">
-					<ScrollProgress scrollProgress={scrollProgress} />
+					<ScrollProgress />
 				</div>
-				<Description scrollProgress={scrollProgress} setScrollProgress={setScrollProgress} />
+				<Description />
 			</div>
 		</div>
 	)
