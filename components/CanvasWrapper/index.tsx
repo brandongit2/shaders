@@ -3,16 +3,18 @@
 import {Canvas} from "@react-three/fiber"
 import {WebGLRenderer} from "three"
 
-import type {ReactElement} from "react"
+import type {ReactElement, ReactNode} from "react"
 
-import Red from "./Red"
+type Props = {
+	children: ReactNode
+}
 
-const RedPage = (): ReactElement | null => {
+const CanvasWrapper = ({children}: Props): ReactElement | null => {
 	return (
 		<Canvas flat linear gl={(canvas) => new WebGLRenderer({canvas, context: canvas.getContext(`webgl2`) ?? undefined})}>
-			<Red />
+			{children}
 		</Canvas>
 	)
 }
 
-export default RedPage
+export default CanvasWrapper

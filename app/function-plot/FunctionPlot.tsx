@@ -7,9 +7,9 @@ import {useRef} from "react"
 import type {ReactElement} from "react"
 import type {ShaderMaterial} from "three"
 
-import SimplePlotMaterial from "./SimplePlotMaterial"
+import FunctionPlotMaterial from "./FunctionPlotMaterial"
 
-const SimplePlot = (): ReactElement | null => {
+const FunctionPlot = (): ReactElement | null => {
 	const viewport = useThree((state) => state.viewport)
 
 	// Update time uniform
@@ -25,8 +25,8 @@ const SimplePlot = (): ReactElement | null => {
 
 			<mesh scale={[viewport.width, viewport.height, 1]}>
 				<planeGeometry />
-				<simplePlotMaterial
-					key={SimplePlotMaterial.key}
+				<functionPlotMaterial
+					key={FunctionPlotMaterial.key}
 					ref={ref}
 					time={0}
 					pixelSizeX={1 / viewport.width}
@@ -37,4 +37,4 @@ const SimplePlot = (): ReactElement | null => {
 	)
 }
 
-export default SimplePlot
+export default FunctionPlot

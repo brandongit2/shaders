@@ -1,7 +1,7 @@
 declare global {
 	namespace JSX {
 		interface IntrinsicElements {
-			simplePlotMaterial: {
+			functionPlotMaterial: {
 				time: number
 				pixelSizeX: number
 				pixelSizeY: number

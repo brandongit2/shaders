@@ -3,7 +3,7 @@ import {extend} from "@react-three/fiber"
 
 import glsl from "helpers/glsl"
 
-const SimplePlotMaterial = shaderMaterial(
+const FunctionPlotMaterial = shaderMaterial(
 	{time: 0, pixelSizeX: 1, pixelSizeY: 1},
 	glsl`
     out vec2 f_uv;
@@ -21,7 +21,7 @@ const SimplePlotMaterial = shaderMaterial(
     uniform float pixelSizeY;
 
     float fn(float x) {
-      return pow(x, 2.0) + sin((x + time) * 5.0) / 5.0 + 0.1;
+      return pow(x, 2.0) + sin((x + time / 3.0) * 5.0) / 5.0 + 0.1;
     }
 
     const vec3 plotColor = vec3(0.0, 1.0, 0.0);
@@ -47,6 +47,6 @@ const SimplePlotMaterial = shaderMaterial(
   `
 )
 
-extend({SimplePlotMaterial})
+extend({FunctionPlotMaterial})
 
-export default SimplePlotMaterial
+export default FunctionPlotMaterial
