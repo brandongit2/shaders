@@ -8,13 +8,13 @@ import Overlay from "components/Overlay"
 const FunctionPlotPage = (): ReactElement | null => {
 	return (
 		<>
-			<Overlay disabled>
+			<Overlay>
 				<CanvasWrapper>
 					<FunctionPlot />
 				</CanvasWrapper>
 			</Overlay>
 
-			<div className="mx-auto max-w-xl py-8">
+			<div className="mx-auto max-w-xl py-8 px-2">
 				<h1 className="mb-2 text-2xl font-bold">Function plot</h1>
 				<p>
 					This is a plot of the function <Katex>{`x^2 + \\frac{1}{5}\\sin(5x + t)`}</Katex> on the domain{` `}

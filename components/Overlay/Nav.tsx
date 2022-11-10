@@ -4,10 +4,9 @@ import clsx from "clsx"
 import {AnimatePresence, motion} from "framer-motion"
 import Link from "next/link"
 import {useEffect, useState} from "react"
+import {MdExpandLess} from "react-icons/md"
 
 import type {ReactElement} from "react"
-
-import Icon from "components/Icon"
 
 const Nav = (): ReactElement | null => {
 	const [isExpanded, setIsExpanded] = useState(false)
@@ -29,11 +28,11 @@ const Nav = (): ReactElement | null => {
 				<button
 					type="button"
 					onClick={() => void setIsExpanded((v) => !v)}
-					className="flex items-center justify-between gap-4"
+					className="flex items-center justify-between gap-2"
 				>
 					<p className="font-bold">Other shaders</p>
-					<div className={clsx(`transition-transform`, !isExpanded && `rotate-180`)}>
-						<Icon>expand_more</Icon>
+					<div className={clsx(`transition-transform`, isExpanded && `rotate-180`)}>
+						<MdExpandLess size="1.5rem" />
 					</div>
 				</button>
 				<AnimatePresence>
