@@ -1,7 +1,7 @@
 "use client"
 
 import {useFrame, useThree} from "@react-three/fiber"
-import {LayoutOrthographicCamera} from "framer-motion-3d"
+import {LayoutOrthographicCamera, motion as motion3d} from "framer-motion-3d"
 import {useRef} from "react"
 
 import type {ReactElement} from "react"
@@ -23,8 +23,8 @@ const FunctionPlot = (): ReactElement | null => {
 		<>
 			<LayoutOrthographicCamera makeDefault near={0} position={[0, 0, 5]} />
 
-			<mesh scale={[viewport.width, viewport.height, 1]}>
-				<planeGeometry />
+			{/* <mesh scale={[viewport.width, viewport.height, 1]}>
+				<planeBufferGeometry />
 				<functionPlotMaterial
 					key={FunctionPlotMaterial.key}
 					ref={ref}
@@ -32,7 +32,7 @@ const FunctionPlot = (): ReactElement | null => {
 					pixelSizeX={1 / viewport.width}
 					pixelSizeY={1 / viewport.height}
 				/>
-			</mesh>
+			</mesh> */}
 		</>
 	)
 }

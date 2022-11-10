@@ -1,6 +1,6 @@
 "use client"
 
-import {Canvas} from "@react-three/fiber"
+import {MotionCanvas} from "framer-motion-3d"
 import {WebGLRenderer} from "three"
 
 import type {ReactElement, ReactNode} from "react"
@@ -11,9 +11,13 @@ type Props = {
 
 const CanvasWrapper = ({children}: Props): ReactElement | null => {
 	return (
-		<Canvas flat linear gl={(canvas) => new WebGLRenderer({canvas, context: canvas.getContext(`webgl2`) ?? undefined})}>
+		<MotionCanvas
+			flat
+			linear
+			gl={(canvas) => new WebGLRenderer({canvas, context: canvas.getContext(`webgl2`) ?? undefined})}
+		>
 			{children}
-		</Canvas>
+		</MotionCanvas>
 	)
 }
 

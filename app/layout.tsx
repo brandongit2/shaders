@@ -17,7 +17,7 @@ const RootLayout = ({children}: Props): ReactElement | null => {
 			<head>
 				<title>Shaders!!</title>
 			</head>
-			<body className={clsx(font.className, `h-full`)}>{children}</body>
+			<body className={clsx(font.className, `h-full bg-[#330D6B]`)}>{children}</body>
 		</html>
 	)
 }
