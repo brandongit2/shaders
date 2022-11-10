@@ -1,39 +1,26 @@
 "use client"
 
-import {useFrame, useThree} from "@react-three/fiber"
-import {LayoutOrthographicCamera} from "framer-motion-3d"
-import {useRef} from "react"
-
 import type {ReactElement} from "react"
-import type {ShaderMaterial} from "three"
 
-import FunctionPlotMaterial from "./FunctionPlotMaterial"
+import Canvas from "components/Canvas"
+import glsl from "helpers/glsl"
 
 const FunctionPlot = (): ReactElement | null => {
-	const viewport = useThree((state) => state.viewport)
-
-	// Update time uniform
-	const ref = useRef<ShaderMaterial | null>(null)
-	useFrame((state, delta) => {
-		if (!ref.current || !ref.current.uniforms.time) return
-		ref.current.uniforms.time.value += delta
-	})
-
 	return (
-		<>
-			<LayoutOrthographicCamera makeDefault near={0} position={[0, 0, 5]} />
+		<Canvas
+			fragmentShader={glsl`#version 300 es
 
-			<mesh scale={[viewport.width, viewport.height, 1]}>
-				<planeGeometry />
-				<functionPlotMaterial
-					key={FunctionPlotMaterial.key}
-					ref={ref}
-					time={0}
-					pixelSizeX={1 / viewport.width}
-					pixelSizeY={1 / viewport.height}
-				/>
-			</mesh>
-		</>
+				precision highp float;
+
+				in vec2 f_uv;
+
+				out vec4 fragColor;
+
+				void main() {
+					fragColor = vec4(f_uv.x, f_uv.y, 0.0, 1.0);
+				}
+			`}
+		/>
 	)
 }
 

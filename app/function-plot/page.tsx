@@ -1,11 +1,8 @@
 "use client"
 
 import clsx from "clsx"
-import {motion} from "framer-motion"
-import {MotionCanvas} from "framer-motion-3d"
 import Link from "next/link"
 import {useState} from "react"
-import {WebGLRenderer} from "three"
 
 import type {ReactElement} from "react"
 
@@ -15,27 +12,15 @@ const FunctionPlotPage = (): ReactElement | null => {
 	const [areDetailsOpen, setAreDetailsOpen] = useState(false)
 
 	return (
-		<motion.div
-			layout
-			style={{
-				width: areDetailsOpen ? `80%` : `100%`,
-				height: areDetailsOpen ? `80%` : `100%`,
-				top: areDetailsOpen ? `10%` : `0`,
-				left: areDetailsOpen ? `10%` : `0`,
-			}}
-			transition={{duration: 1, ease: `easeInOut`}}
+		<div
 			className={clsx(
-				`absolute overflow-hidden text-white transition-[border-radius] duration-1000`,
-				areDetailsOpen && `rounded-xl`
+				`absolute inset-0 overflow-hidden text-white transition-[border-radius,inset] duration-1000`,
+				areDetailsOpen && `inset-8 rounded-xl`
 			)}
 		>
-			<MotionCanvas
-				flat
-				linear
-				gl={(canvas) => new WebGLRenderer({canvas, context: canvas.getContext(`webgl2`) ?? undefined})}
-			>
+			<div className="absolute inset-0 overflow-hidden">
 				<FunctionPlot />
-			</MotionCanvas>
+			</div>
 
 			<div
 				className="absolute bottom-0 left-0 h-28 w-full"
@@ -57,7 +42,7 @@ const FunctionPlotPage = (): ReactElement | null => {
 				}}
 			/>
 
-			<motion.div layout className="absolute left-0 top-0 p-8">
+			<div className="absolute left-0 bottom-0 flex w-full items-end justify-between p-8">
 				<div className="translate-y-1">
 					<h1 className="mb-1 text-xl font-bold">
 						<span className="font-normal opacity-80">Day 1 | </span>
@@ -75,8 +60,8 @@ const FunctionPlotPage = (): ReactElement | null => {
 					</Link>
 					{` `}on 9 Nov 2022.
 				</p>
-			</motion.div>
-		</motion.div>
+			</div>
+		</div>
 	)
 }
 
