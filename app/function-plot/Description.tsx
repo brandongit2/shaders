@@ -1,11 +1,12 @@
 import {Joan} from "@next/font/google"
 import * as ScrollArea from "@radix-ui/react-scroll-area"
 import clsx from "clsx"
-import {useEffect, useState} from "react"
+import {useEffect} from "react"
 
 import type {ReactElement} from "react"
 
 import DescriptionSection from "./DescriptionSection"
+import useDescriptionStore from "./descriptionStore"
 import Katex from "~/components/Katex"
 
 // eslint-disable-next-line @typescript-eslint/quotes
@@ -17,6 +18,21 @@ type Props = {
 }
 
 const Description = ({scrollProgress, setScrollProgress}: Props): ReactElement | null => {
+	const {setSectionInfo, descriptionPadding, setDescriptionPadding} = useDescriptionStore()
+	useEffect(() => {
+		const scroller = document.querySelector(`[data-scroller]`) as HTMLElement
+
+		setDescriptionPadding(scroller.clientHeight / 2)
+
+		const sections = Array.from(document.querySelectorAll(`[data-description-section]`))
+		setSectionInfo(
+			sections.map((section: HTMLElement) => ({
+				top: section.offsetTop / scroller.scrollHeight,
+				bottom: (section.offsetTop + section.offsetHeight) / scroller.scrollHeight,
+			}))
+		)
+	}, [setSectionInfo, setDescriptionPadding])
+
 	return (
 		<ScrollArea.Root className="mr-2 overflow-hidden">
 			<ScrollArea.Viewport
@@ -28,10 +44,8 @@ const Description = ({scrollProgress, setScrollProgress}: Props): ReactElement |
 				}}
 				data-scroller
 			>
+				<div style={{height: `${descriptionPadding}px`}} />
 				<DescriptionSection scrollProgress={scrollProgress}>
-					<h2 className="mb-4 ml-2 mt-2 inline-block bg-white/60 py-1 px-4 text-xl font-bold leading-none text-[#22074A]">
-						Description
-					</h2>
 					<p className={joan.className}>
 						This is a plot of the function <Katex>{`x^2 + \\frac{1}{5}\\sin(5x + t)`}</Katex> on the domain{` `}
 						<Katex>{`x \\in [0, 1]`}</Katex> and range{` `}
@@ -84,6 +98,7 @@ const Description = ({scrollProgress, setScrollProgress}: Props): ReactElement |
 						tortor et quam pulvinar, sit amet imperdiet ex interdum. Nulla facilisi. Nulla eu ultricies arcu.
 					</p>
 				</DescriptionSection>
+				<div style={{height: `${descriptionPadding}px`}} />
 			</ScrollArea.Viewport>
 		</ScrollArea.Root>
 	)

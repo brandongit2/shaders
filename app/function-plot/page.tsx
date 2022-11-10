@@ -15,8 +15,8 @@ const FunctionPlotPage = (): ReactElement | null => {
 	const [scrollProgress, setScrollProgress] = useState(0)
 
 	return (
-		<div className="mx-auto grid h-full max-w-2xl grid-rows-[min(100vw,50vh)_auto] gap-6 p-2 text-white">
-			<div className="relative z-10 h-full overflow-hidden rounded-xl shadow-lg shadow-black/50">
+		<div className="mx-auto grid h-full max-w-4xl grid-rows-[min(100vw,50vh)_auto] gap-6 p-2 text-white md:p-6 lg:grid-cols-[1fr_minmax(30rem,1fr)] lg:grid-rows-1">
+			<div className="relative z-10 h-full overflow-hidden rounded-xl shadow-lg shadow-black/50 lg:order-2 lg:my-auto lg:max-h-[30rem]">
 				<div className="absolute inset-0 overflow-hidden">
 					<FunctionPlot />
 				</div>
@@ -26,7 +26,9 @@ const FunctionPlotPage = (): ReactElement | null => {
 			</div>
 
 			<div className="grid h-full grid-cols-[2rem_1fr] overflow-hidden">
-				<ScrollProgress scrollProgress={scrollProgress} />
+				<div className="grid place-items-center">
+					<ScrollProgress scrollProgress={scrollProgress} />
+				</div>
 				<Description scrollProgress={scrollProgress} setScrollProgress={setScrollProgress} />
 			</div>
 		</div>
