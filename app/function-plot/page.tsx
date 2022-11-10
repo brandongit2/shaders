@@ -8,7 +8,7 @@ import Overlay from "components/Overlay"
 const FunctionPlotPage = (): ReactElement | null => {
 	return (
 		<>
-			<Overlay>
+			<Overlay shaderName="Function plot">
 				<CanvasWrapper>
 					<FunctionPlot />
 				</CanvasWrapper>

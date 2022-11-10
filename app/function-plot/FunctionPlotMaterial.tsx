@@ -21,10 +21,10 @@ const FunctionPlotMaterial = shaderMaterial(
     uniform float pixelSizeY;
 
     float fn(float x) {
-      return pow(x, 2.0) + sin((x + time / 3.0) * 5.0) / 5.0 + 0.1;
+      return x * x + sin((x + time / 3.0) * 5.0) / 5.0 + 0.1;
     }
 
-    const vec3 plotColor = vec3(0.0, 1.0, 0.0);
+    const vec3 plotColor = vec3(1.0, 0.0, 0.0);
     const float plotThickness = 16.0;
 
     void main() {
@@ -42,7 +42,7 @@ const FunctionPlotMaterial = shaderMaterial(
         x += pixelSizeX / 2.0;
       }
 
-      gl_FragColor = paint ? vec4(plotColor, 1.0) : vec4(vec3(f_uv.y), 1.0);
+      gl_FragColor = paint ? vec4(plotColor, 1.0) : vec4(1.0, 1.0, 1.0, 1.0);
     }
   `
 )
