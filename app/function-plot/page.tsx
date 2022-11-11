@@ -36,7 +36,7 @@ const FunctionPlotPage = (): ReactElement | null => {
 			</motion.div>
 
 			{/* Take the canvas' place when it's animating to full-screen */}
-			{!areDetailsOpen && <div />}
+			{!areDetailsOpen && <div className="md:order-2" />}
 
 			<div className="grid h-full grid-cols-[2rem_1fr] overflow-hidden">
 				<div className="grid place-items-center">

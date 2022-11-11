@@ -119,7 +119,7 @@ const Canvas = ({fragmentShader: fragmentShaderSource}: Props): ReactElement | n
 		return () => void cancelAnimationFrame(animationFrame)
 	}, [contentRect])
 
-	return <canvas ref={canvasCallback} className="h-full w-full" />
+	return <canvas ref={canvasCallback} className="h-full w-full bg-[#22074A]" />
 }
 
 export default Canvas
