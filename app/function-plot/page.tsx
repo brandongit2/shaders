@@ -23,8 +23,8 @@ const FunctionPlotPage = (): ReactElement | null => {
 				animate={areDetailsOpen ? {borderRadius: `16px`} : {borderRadius: `0px`}}
 				transition={{duration: 1, ease: [0.65, 0, 0.35, 1]}}
 				className={clsx(
-					`relative z-10 overflow-hidden`,
-					areDetailsOpen && `h-full shadow-lg shadow-black/30 md:order-2 md:my-auto md:max-h-[30rem]`
+					`relative z-10 overflow-hidden shadow-lg shadow-black/30`,
+					areDetailsOpen && `h-full md:order-2 md:my-auto md:max-h-[30rem]`
 				)}
 			>
 				<div className="absolute inset-0 overflow-hidden">
@@ -34,6 +34,9 @@ const FunctionPlotPage = (): ReactElement | null => {
 				<OverlayShadow />
 				<Overlay areDetailsOpen={areDetailsOpen} setAreDetailsOpen={setAreDetailsOpen} />
 			</motion.div>
+
+			{/* Take the canvas' place when it's animating to full-screen */}
+			{!areDetailsOpen && <div />}
 
 			<div className="grid h-full grid-cols-[2rem_1fr] overflow-hidden">
 				<div className="grid place-items-center">

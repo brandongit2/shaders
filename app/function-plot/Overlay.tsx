@@ -1,4 +1,5 @@
-import {AnimatePresence, motion} from "framer-motion"
+import clsx from "clsx"
+import {motion} from "framer-motion"
 import Link from "next/link"
 
 import type {ReactElement} from "react"
@@ -11,7 +12,11 @@ type Props = {
 const Overlay = ({areDetailsOpen, setAreDetailsOpen}: Props): ReactElement | null => {
 	return (
 		<>
-			<motion.div layout transition={{duration: 1, ease: [0.65, 0, 0.35, 1]}} className="absolute left-8 bottom-6">
+			<motion.div
+				layout
+				transition={{duration: 1, ease: [0.65, 0, 0.35, 1]}}
+				className="absolute left-8 bottom-14 sm:bottom-6"
+			>
 				<h1 className="mb-1 text-xl font-bold">
 					<span className="font-normal text-white/60">Day 1 | </span>
 					Function plot
@@ -25,7 +30,7 @@ const Overlay = ({areDetailsOpen, setAreDetailsOpen}: Props): ReactElement | nul
 				layout
 				transition={{duration: 1, ease: [0.65, 0, 0.35, 1], opacity: {duration: 0.6, delay: areDetailsOpen ? 0 : 0.4}}}
 				animate={{opacity: areDetailsOpen ? 0 : 1}}
-				className="absolute right-8 bottom-6"
+				className={clsx(`absolute left-8 bottom-6 sm:left-auto sm:right-8`, areDetailsOpen && `pointer-events-none`)}
 			>
 				<p className="text-sm text-white/50">
 					By{` `}

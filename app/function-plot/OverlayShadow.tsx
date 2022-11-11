@@ -1,8 +1,12 @@
+import {motion} from "framer-motion"
+
 import type {ReactElement} from "react"
 
 const OverlayShadow = (): ReactElement | null => {
 	return (
-		<div
+		<motion.div
+			layout
+			transition={{duration: 1, ease: [0.65, 0, 0.35, 1]}}
 			className="absolute bottom-0 left-0 h-36 w-full"
 			style={{
 				backgroundImage: `
