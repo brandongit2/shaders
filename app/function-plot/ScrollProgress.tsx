@@ -1,17 +1,21 @@
 import clsx from "clsx"
+import shallow from "zustand/shallow"
 
 import type {ReactElement} from "react"
 
 import useDescriptionStore from "./descriptionStore"
 
 const ScrollProgress = (): ReactElement | null => {
-	const {sectionInfo, scrollProgress} = useDescriptionStore()
+	const {sectionInfo, scrollProgress} = useDescriptionStore(
+		(state) => ({sectionInfo: state.sectionInfo, scrollProgress: state.scrollProgress}),
+		shallow
+	)
 
 	return (
 		<div className="relative h-full max-h-72 w-0">
 			<div className="absolute h-full w-px bg-white/20" />
 
-			{sectionInfo.map((section, i) => (
+			{Object.values(sectionInfo).map((section, i) => (
 				<div
 					key={i}
 					className={clsx(

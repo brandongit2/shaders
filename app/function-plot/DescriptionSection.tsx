@@ -1,5 +1,6 @@
 import clsx from "clsx"
-import {useCallback, useState} from "react"
+import {useCallback} from "react"
+import shallow from "zustand/shallow"
 
 import type {ReactElement, ReactNode} from "react"
 
@@ -7,20 +8,30 @@ import useDescriptionStore from "./descriptionStore"
 
 type Props = {
 	children: ReactNode
+	name: string
 }
 
-const DescriptionSection = ({children}: Props): ReactElement | null => {
-	const {scrollProgress} = useDescriptionStore()
+const DescriptionSection = ({children, name}: Props): ReactElement | null => {
+	const {scrollProgress, sectionInfo, setSectionInfo} = useDescriptionStore(
+		(state) => ({
+			scrollProgress: state.scrollProgress,
+			sectionInfo: state.sectionInfo[name] ?? {top: 0, bottom: 0},
+			setSectionInfo: state.setSectionInfo,
+		}),
+		shallow
+	)
 
-	const [sectionInfo, setSectionInfo] = useState<{top: number; bottom: number}>({top: 0, bottom: 0})
-	const sectionRef = useCallback((section: HTMLDivElement | null) => {
-		if (!section) return
-		const scroller = document.querySelector(`[data-scroller]`) as HTMLElement
-		setSectionInfo({
-			top: section.offsetTop / scroller.scrollHeight,
-			bottom: (section.offsetTop + section.offsetHeight) / scroller.scrollHeight,
-		})
-	}, [])
+	const sectionRef = useCallback(
+		(section: HTMLDivElement | null) => {
+			if (!section) return
+			const scroller = document.querySelector(`[data-scroller]`) as HTMLElement
+			setSectionInfo(name, {
+				top: section.offsetTop / scroller.scrollHeight,
+				bottom: (section.offsetTop + section.offsetHeight) / scroller.scrollHeight,
+			})
+		},
+		[setSectionInfo, name]
+	)
 
 	return (
 		<div

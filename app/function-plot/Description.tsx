@@ -2,6 +2,7 @@ import {Joan} from "@next/font/google"
 import * as ScrollArea from "@radix-ui/react-scroll-area"
 import clsx from "clsx"
 import {useEffect} from "react"
+import shallow from "zustand/shallow"
 
 import type {ReactElement} from "react"
 
@@ -13,25 +14,27 @@ import Katex from "~/components/Katex"
 const joan = Joan({weight: "400"})
 
 const Description = (): ReactElement | null => {
-	const {setSectionInfo, descriptionPadding, setDescriptionPadding, setScrollProgress} = useDescriptionStore()
+	const {
+		descriptionPadding: [descriptionPaddingTop, descriptionPaddingBottom],
+		setDescriptionPaddingTop,
+		setDescriptionPaddingBottom,
+		setScrollProgress,
+	} = useDescriptionStore(
+		(state) => ({
+			descriptionPadding: state.descriptionPadding,
+			setDescriptionPaddingTop: state.setDescriptionPaddingTop,
+			setDescriptionPaddingBottom: state.setDescriptionPaddingBottom,
+			setScrollProgress: state.setScrollProgress,
+		}),
+		shallow
+	)
+
 	useEffect(() => {
 		const scroller = document.querySelector(`[data-scroller]`) as HTMLElement
 
-		setDescriptionPadding(scroller.clientHeight / 2)
-	}, [setDescriptionPadding])
-
-	useEffect(() => {
-		if (descriptionPadding === 0) return
-		const scroller = document.querySelector(`[data-scroller]`) as HTMLElement
-
-		const sections: HTMLElement[] = Array.from(document.querySelectorAll(`[data-description-section]`))
-		setSectionInfo(
-			sections.map((section) => ({
-				top: section.offsetTop / scroller.scrollHeight,
-				bottom: (section.offsetTop + section.offsetHeight) / scroller.scrollHeight,
-			}))
-		)
-	}, [descriptionPadding, setSectionInfo])
+		setDescriptionPaddingTop(scroller.clientHeight / 2)
+		setDescriptionPaddingBottom(scroller.clientHeight / 2)
+	}, [setDescriptionPaddingBottom, setDescriptionPaddingTop])
 
 	return (
 		<ScrollArea.Root className="mr-2 overflow-hidden">
@@ -44,8 +47,8 @@ const Description = (): ReactElement | null => {
 				}}
 				data-scroller
 			>
-				<div style={{height: `${descriptionPadding}px`}} />
-				<DescriptionSection>
+				<div style={{height: `${descriptionPaddingTop}px`}} />
+				<DescriptionSection name="intro">
 					<p className={joan.className}>
 						This is a plot of the function <Katex>{`x^2 + \\frac{1}{5}\\sin(5x + t)`}</Katex> on the domain{` `}
 						<Katex>{`x \\in [0, 1]`}</Katex> and range{` `}
@@ -56,7 +59,7 @@ const Description = (): ReactElement | null => {
 					<br />
 					<p>To make it was more complicated than it seems. Let&apos;s explore how I did it.</p>
 				</DescriptionSection>
-				<DescriptionSection>
+				<DescriptionSection name="paragraph-1">
 					<p>
 						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas ut neque nisl. Sed ac quam lorem. Ut nisi
 						nibh, tincidunt ac enim in, suscipit vestibulum purus. Integer rhoncus elit non ornare commodo. Integer
@@ -67,7 +70,7 @@ const Description = (): ReactElement | null => {
 						ligula tincidunt mollis tempor tempor nibh. Nulla eget nisi quis purus scelerisque tincidunt.
 					</p>
 				</DescriptionSection>
-				<DescriptionSection>
+				<DescriptionSection name="paragraph-2">
 					<p>
 						Proin ligula urna, eleifend non tincidunt id, hendrerit eu felis. Ut vestibulum quis elit sed condimentum.
 						Duis justo eros, elementum eget mollis nec, interdum id elit. Suspendisse libero leo, placerat quis nunc et,
@@ -76,7 +79,7 @@ const Description = (): ReactElement | null => {
 						odio vitae lorem accumsan ultricies eu non ipsum. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 					</p>
 				</DescriptionSection>
-				<DescriptionSection>
+				<DescriptionSection name="paragraph-3">
 					<p>
 						Pellentesque ut orci at quam egestas dignissim. Vivamus ut erat placerat, dignissim orci sed, tempor lacus.
 						Morbi pellentesque dui velit, eu blandit metus hendrerit in. Interdum et malesuada fames ac ante ipsum
@@ -87,7 +90,7 @@ const Description = (): ReactElement | null => {
 						gravida ac eros vel suscipit.
 					</p>
 				</DescriptionSection>
-				<DescriptionSection>
+				<DescriptionSection name="paragraph-4">
 					<p>
 						Aenean aliquam quam et neque ullamcorper suscipit. Ut pulvinar, nulla non placerat sagittis, velit nulla
 						consequat sem, eu varius leo sem at ipsum. Donec et laoreet nunc. Maecenas quis nunc non sem varius mollis.
@@ -98,7 +101,7 @@ const Description = (): ReactElement | null => {
 						tortor et quam pulvinar, sit amet imperdiet ex interdum. Nulla facilisi. Nulla eu ultricies arcu.
 					</p>
 				</DescriptionSection>
-				<div style={{height: `${descriptionPadding}px`}} />
+				<div style={{height: `${descriptionPaddingBottom}px`}} />
 			</ScrollArea.Viewport>
 		</ScrollArea.Root>
 	)
