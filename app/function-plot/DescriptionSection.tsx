@@ -17,7 +17,7 @@ const DescriptionSection = ({children, name, last}: Props): ReactElement | null 
 	const setSectionInfo = useDescriptionStore((state) => state.setSectionInfo)
 
 	const {ref: interesectionRef, inView} = useInView({
-		root: document.querySelector(`[data-scroller]`),
+		root: typeof window !== `undefined` ? document.querySelector(`[data-scroller]`) : null,
 		rootMargin: `-49% 0px -49% 0px`,
 	})
 
