@@ -8,6 +8,8 @@ type SectionInfo = {
 }
 
 type DescriptionStore = {
+	isDescriptionOpen: boolean
+	toggleDescription: () => void
 	sectionInfo: Record<string, SectionInfo>
 	setSectionInfo: (name: string, info: Partial<SectionInfo>) => void
 	descriptionPadding: [number, number]
@@ -19,6 +21,8 @@ type DescriptionStore = {
 
 const useDescriptionStore = create(
 	immer<DescriptionStore>((set) => ({
+		isDescriptionOpen: false,
+		toggleDescription: () => set((state) => void (state.isDescriptionOpen = !state.isDescriptionOpen)),
 		sectionInfo: {},
 		setSectionInfo: (name, info) =>
 			set((state) => {

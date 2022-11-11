@@ -1,36 +1,43 @@
 import clsx from "clsx"
 import {motion} from "framer-motion"
 import Link from "next/link"
+import shallow from "zustand/shallow"
 
 import type {ReactElement} from "react"
 
-type Props = {
-	areDetailsOpen: boolean
-	setAreDetailsOpen: React.Dispatch<React.SetStateAction<boolean>>
-}
+import useDescriptionStore from "./descriptionStore"
 
-const Overlay = ({areDetailsOpen, setAreDetailsOpen}: Props): ReactElement | null => {
+const Overlay = (): ReactElement | null => {
+	const {isDescriptionOpen, toggleDescription} = useDescriptionStore(
+		(state) => ({isDescriptionOpen: state.isDescriptionOpen, toggleDescription: state.toggleDescription}),
+		shallow
+	)
+
 	return (
 		<>
 			<motion.div
 				layout
 				transition={{duration: 1, ease: [0.65, 0, 0.35, 1]}}
-				className={clsx(`absolute left-8`, areDetailsOpen ? `bottom-6` : `bottom-14 sm:bottom-6`)}
+				className={clsx(`absolute left-8`, isDescriptionOpen ? `bottom-6` : `bottom-14 sm:bottom-6`)}
 			>
 				<h1 className="mb-1 text-xl font-bold">
 					<span className="font-normal text-white/60">Day 1 | </span>
 					Function plot
 				</h1>
-				<button type="button" onClick={() => void setAreDetailsOpen((v) => !v)} className="text-left text-sm underline">
-					{areDetailsOpen ? `Hide` : `Open`} description + breakdown
+				<button type="button" onClick={() => void toggleDescription()} className="text-left text-sm underline">
+					{isDescriptionOpen ? `Hide` : `Open`} description + breakdown
 				</button>
 			</motion.div>
 
 			<motion.div
 				layout
-				transition={{duration: 1, ease: [0.65, 0, 0.35, 1], opacity: {duration: 0.6, delay: areDetailsOpen ? 0 : 0.4}}}
-				animate={{opacity: areDetailsOpen ? 0 : 1}}
-				className={clsx(`absolute left-8 bottom-6 sm:left-auto sm:right-8`, areDetailsOpen && `pointer-events-none`)}
+				transition={{
+					duration: 1,
+					ease: [0.65, 0, 0.35, 1],
+					opacity: {duration: 0.6, delay: isDescriptionOpen ? 0 : 0.4},
+				}}
+				animate={{opacity: isDescriptionOpen ? 0 : 1}}
+				className={clsx(`absolute left-8 bottom-6 sm:left-auto sm:right-8`, isDescriptionOpen && `pointer-events-none`)}
 			>
 				<p className="text-sm text-white/50">
 					By{` `}
