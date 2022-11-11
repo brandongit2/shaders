@@ -1,3 +1,4 @@
+import {AnimatePresence, motion} from "framer-motion"
 import Link from "next/link"
 
 import type {ReactElement} from "react"
@@ -9,8 +10,8 @@ type Props = {
 
 const Overlay = ({areDetailsOpen, setAreDetailsOpen}: Props): ReactElement | null => {
 	return (
-		<div className="absolute left-0 bottom-0 flex w-full flex-col justify-between gap-4 px-8 pb-6">
-			<div>
+		<>
+			<motion.div layout transition={{duration: 1, ease: [0.65, 0, 0.35, 1]}} className="absolute left-8 bottom-6">
 				<h1 className="mb-1 text-xl font-bold">
 					<span className="font-normal text-white/60">Day 1 | </span>
 					Function plot
@@ -18,18 +19,23 @@ const Overlay = ({areDetailsOpen, setAreDetailsOpen}: Props): ReactElement | nul
 				<button type="button" onClick={() => void setAreDetailsOpen((v) => !v)} className="text-left text-sm underline">
 					{areDetailsOpen ? `Hide` : `Open`} description + breakdown
 				</button>
-			</div>
+			</motion.div>
 
-			{!areDetailsOpen && (
-				<p className="text-sm opacity-50">
+			<motion.div
+				layout
+				transition={{duration: 1, ease: [0.65, 0, 0.35, 1], opacity: {duration: 0.6, delay: areDetailsOpen ? 0 : 0.4}}}
+				animate={{opacity: areDetailsOpen ? 0 : 1}}
+				className="absolute right-8 bottom-6"
+			>
+				<p className="text-sm text-white/50">
 					By{` `}
 					<Link href="https://www.brandontsang.net/" target="_blank" className="underline">
 						Brandon Tsang
 					</Link>
 					{` `}on 10 Nov 2022.
 				</p>
-			)}
-		</div>
+			</motion.div>
+		</>
 	)
 }
 
