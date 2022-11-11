@@ -15,7 +15,7 @@ const Overlay = ({areDetailsOpen, setAreDetailsOpen}: Props): ReactElement | nul
 			<motion.div
 				layout
 				transition={{duration: 1, ease: [0.65, 0, 0.35, 1]}}
-				className="absolute left-8 bottom-14 sm:bottom-6"
+				className={clsx(`absolute left-8`, areDetailsOpen ? `bottom-6` : `bottom-14 sm:bottom-6`)}
 			>
 				<h1 className="mb-1 text-xl font-bold">
 					<span className="font-normal text-white/60">Day 1 | </span>
