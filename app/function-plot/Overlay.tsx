@@ -12,7 +12,7 @@ const Overlay = ({areDetailsOpen, setAreDetailsOpen}: Props): ReactElement | nul
 		<div className="absolute left-0 bottom-0 flex w-full flex-col justify-between gap-4 px-8 pb-6">
 			<div>
 				<h1 className="mb-1 text-xl font-bold">
-					<span className="font-normal opacity-70">Day 1 | </span>
+					<span className="font-normal text-white/60">Day 1 | </span>
 					Function plot
 				</h1>
 				<button type="button" onClick={() => void setAreDetailsOpen((v) => !v)} className="text-left text-sm underline">
@@ -20,13 +20,15 @@ const Overlay = ({areDetailsOpen, setAreDetailsOpen}: Props): ReactElement | nul
 				</button>
 			</div>
 
-			<p className="text-sm opacity-50">
-				By{` `}
-				<Link href="https://www.brandontsang.net/" target="_blank" className="underline">
-					Brandon Tsang
-				</Link>
-				{` `}on 10 Nov 2022.
-			</p>
+			{!areDetailsOpen && (
+				<p className="text-sm opacity-50">
+					By{` `}
+					<Link href="https://www.brandontsang.net/" target="_blank" className="underline">
+						Brandon Tsang
+					</Link>
+					{` `}on 10 Nov 2022.
+				</p>
+			)}
 		</div>
 	)
 }

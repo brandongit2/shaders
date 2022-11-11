@@ -40,8 +40,8 @@ const DescriptionSection = ({children, name, last}: Props): ReactElement | null 
 			data-description-section
 			ref={mergeRefs([interesectionRef, ref])}
 			className={clsx(
-				`py-4 transition-opacity duration-300`,
-				!inView && `opacity-50`,
+				`py-4 transition-colors duration-300`,
+				!inView && `text-white/50`,
 				!last && `border-b border-white/20`
 			)}
 		>

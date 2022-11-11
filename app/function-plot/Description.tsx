@@ -1,7 +1,8 @@
 import {Joan} from "@next/font/google"
 import * as ScrollArea from "@radix-ui/react-scroll-area"
 import clsx from "clsx"
-import {useEffect} from "react"
+import Link from "next/link"
+import {useCallback, useEffect} from "react"
 import shallow from "zustand/shallow"
 
 import type {ReactElement} from "react"
@@ -29,12 +30,22 @@ const Description = (): ReactElement | null => {
 		shallow
 	)
 
-	useEffect(() => {
+	const updateDescriptionPadding = useCallback(() => {
 		const scroller = document.querySelector(`[data-scroller]`) as HTMLElement
+		const sections: HTMLDivElement[] = Array.from(document.querySelectorAll(`[data-description-section]`))
+		const firstSection = sections[0]
+		const lastSection = sections.at(-1)
+		if (!firstSection || !lastSection) return
 
-		setDescriptionPaddingTop(scroller.clientHeight / 2)
-		setDescriptionPaddingBottom(scroller.clientHeight / 2)
+		setDescriptionPaddingTop(scroller.clientHeight / 2 - firstSection.clientHeight / 2)
+		setDescriptionPaddingBottom(scroller.clientHeight / 2 - lastSection.clientHeight / 2)
 	}, [setDescriptionPaddingBottom, setDescriptionPaddingTop])
+
+	useEffect(() => {
+		updateDescriptionPadding()
+		window.addEventListener(`resize`, updateDescriptionPadding)
+		return () => window.removeEventListener(`resize`, updateDescriptionPadding)
+	}, [updateDescriptionPadding])
 
 	return (
 		<ScrollArea.Root className="mr-2 overflow-hidden">
@@ -47,7 +58,15 @@ const Description = (): ReactElement | null => {
 				}}
 				data-scroller
 			>
-				<div style={{height: `${descriptionPaddingTop}px`}} />
+				<div style={{height: `${descriptionPaddingTop}px`}} className="flex items-end justify-end">
+					<p className="mb-2 text-sm text-gray-400/40">
+						By{` `}
+						<Link href="https://www.brandontsang.net/" target="_blank" className="underline">
+							Brandon Tsang
+						</Link>
+						{` `}on 10 Nov 2022.
+					</p>
+				</div>
 				<DescriptionSection name="intro">
 					<p className={joan.className}>
 						This is a plot of the function <Katex>{`x^2 + \\frac{1}{5}\\sin(5x + t)`}</Katex> on the domain{` `}

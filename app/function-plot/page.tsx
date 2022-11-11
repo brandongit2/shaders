@@ -14,8 +14,8 @@ const FunctionPlotPage = (): ReactElement | null => {
 	const [areDetailsOpen, setAreDetailsOpen] = useState(false)
 
 	return (
-		<div className="mx-auto grid h-full max-w-4xl grid-rows-[min(100vw,50vh)_auto] gap-6 p-2 text-white md:p-6 lg:grid-cols-[1fr_minmax(30rem,1fr)] lg:grid-rows-1">
-			<div className="relative z-10 h-full overflow-hidden rounded-xl shadow-lg shadow-black/30 lg:order-2 lg:my-auto lg:max-h-[30rem]">
+		<div className="mx-auto grid h-full max-w-4xl grid-rows-[min(100vw,50vh)_auto] gap-6 p-2 text-white md:grid-cols-2 md:grid-rows-1 md:p-6">
+			<div className="relative z-10 h-full overflow-hidden rounded-xl shadow-lg shadow-black/30 md:order-2 md:my-auto md:max-h-[30rem]">
 				<div className="absolute inset-0 overflow-hidden">
 					<FunctionPlot />
 				</div>
