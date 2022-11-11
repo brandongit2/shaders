@@ -90,7 +90,7 @@ const Description = (): ReactElement | null => {
 						gravida ac eros vel suscipit.
 					</p>
 				</DescriptionSection>
-				<DescriptionSection name="paragraph-4">
+				<DescriptionSection name="paragraph-4" last>
 					<p>
 						Aenean aliquam quam et neque ullamcorper suscipit. Ut pulvinar, nulla non placerat sagittis, velit nulla
 						consequat sem, eu varius leo sem at ipsum. Donec et laoreet nunc. Maecenas quis nunc non sem varius mollis.

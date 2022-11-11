@@ -6,7 +6,7 @@ import type {ReactElement} from "react"
 import useDescriptionStore from "./descriptionStore"
 
 const ScrollProgress = (): ReactElement | null => {
-	const {sectionInfo, scrollProgress} = useDescriptionStore(
+	const {sectionInfo} = useDescriptionStore(
 		(state) => ({sectionInfo: state.sectionInfo, scrollProgress: state.scrollProgress}),
 		shallow
 	)
@@ -20,7 +20,7 @@ const ScrollProgress = (): ReactElement | null => {
 					key={i}
 					className={clsx(
 						`absolute -left-1 h-2 w-2 rounded-full bg-white/60 transition-[transform,background-color]`,
-						scrollProgress >= section.top && scrollProgress <= section.bottom && `scale-150 bg-yellow-500`
+						section.isActive && `scale-150 bg-yellow-500`
 					)}
 					style={{top: `${((section.top + section.bottom) / 2) * 100}%`}}
 				/>

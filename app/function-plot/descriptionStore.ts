@@ -1,9 +1,15 @@
 import create from "zustand"
 import {immer} from "zustand/middleware/immer"
 
+type SectionInfo = {
+	isActive: boolean
+	top: number
+	bottom: number
+}
+
 type DescriptionStore = {
-	sectionInfo: Record<string, {top: number; bottom: number}>
-	setSectionInfo: (name: string, info: {top: number; bottom: number}) => void
+	sectionInfo: Record<string, SectionInfo>
+	setSectionInfo: (name: string, info: Partial<SectionInfo>) => void
 	descriptionPadding: [number, number]
 	setDescriptionPaddingTop: (padding: number) => void
 	setDescriptionPaddingBottom: (padding: number) => void
@@ -16,7 +22,10 @@ const useDescriptionStore = create(
 		sectionInfo: {},
 		setSectionInfo: (name, info) =>
 			set((state) => {
-				state.sectionInfo[name] = info
+				state.sectionInfo[name] = {
+					...(state.sectionInfo[name] ?? {isActive: false, top: 0, bottom: 0}),
+					...info,
+				}
 			}),
 		descriptionPadding: [0, 0],
 		setDescriptionPaddingTop: (padding) =>
