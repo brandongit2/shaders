@@ -1,3 +1,5 @@
+"use client"
+
 import clsx from "clsx"
 import {motion} from "framer-motion"
 import Link from "next/link"
@@ -7,7 +9,13 @@ import type {ReactElement} from "react"
 
 import useDescriptionStore from "./descriptionStore"
 
-const Overlay = (): ReactElement | null => {
+type Props = {
+	dayNumber: number
+	name: string
+	date: string
+}
+
+const Overlay = ({dayNumber, name, date}: Props): ReactElement | null => {
 	const {isDescriptionOpen, toggleDescription} = useDescriptionStore(
 		(state) => ({isDescriptionOpen: state.isDescriptionOpen, toggleDescription: state.toggleDescription}),
 		shallow
@@ -21,8 +29,8 @@ const Overlay = (): ReactElement | null => {
 				className={clsx(`absolute left-8`, isDescriptionOpen ? `bottom-6` : `bottom-14 sm:bottom-6`)}
 			>
 				<h1 className="mb-1 text-xl font-bold">
-					<span className="font-normal text-white/60">Day 1 | </span>
-					Function plot
+					<span className="font-normal text-white/60">Day {dayNumber} | </span>
+					{name}
 				</h1>
 				<button type="button" onClick={() => void toggleDescription()} className="text-left text-sm underline">
 					{isDescriptionOpen ? `Hide` : `Open`} description + breakdown
@@ -44,7 +52,7 @@ const Overlay = (): ReactElement | null => {
 					<Link href="https://www.brandontsang.net/" target="_blank" className="underline">
 						Brandon Tsang
 					</Link>
-					{` `}on 10 Nov 2022.
+					{` `}on {date}.
 				</p>
 			</motion.div>
 		</>

@@ -1,11 +1,6 @@
-"use client"
-
-import type {ReactElement} from "react"
-
-import Canvas from "components/Canvas"
 import glsl from "helpers/glsl"
 
-const fragmentShader = glsl`#version 300 es
+export const fragmentShader = glsl`#version 300 es
 	precision highp float;
 
 	in vec2 f_uv;
@@ -39,9 +34,3 @@ const fragmentShader = glsl`#version 300 es
 		fragColor = paint ? vec4(plotColor, 1.0) : vec4(f_uv.x / 7.0 + 0.2, 0.0, f_uv.x * 0.1 + f_uv.y * 0.5, 1.0);
 	}
 `
-
-const FunctionPlot = (): ReactElement | null => {
-	return <Canvas fragmentShader={fragmentShader} />
-}
-
-export default FunctionPlot
