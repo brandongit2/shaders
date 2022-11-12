@@ -9,7 +9,6 @@ import type {ReactElement, ReactNode} from "react"
 
 import Description from "../../components/ShaderPage/Description"
 import Overlay from "./Overlay"
-import OverlayShadow from "./OverlayShadow"
 import ScrollProgress from "./ScrollProgress"
 import useStore from "./store"
 
@@ -51,25 +50,26 @@ const ShaderPage = ({dayNumber, name, date, accentColor, shader, description}: P
 	return (
 		<div
 			className={clsx(
-				`h-full text-white`,
+				`h-full`,
 				(appMode === `description` || delayedAppMode === `description`) &&
-					`mx-auto grid max-w-4xl gap-6 p-2 max-md:grid-rows-[min(100vw,50vh)_auto] md:grid-cols-2 md:p-6`
+					`mx-auto grid max-w-4xl gap-6 p-2 max-md:grid-rows-[min(100vw,50vh)_auto] md:grid-cols-2 md:p-6`,
+				(appMode === `switcher` || delayedAppMode === `switcher`) && `grid place-items-center`
 			)}
 		>
 			{/* The canvas */}
 			<motion.div
 				layout
 				style={appMode === `fullscreen` ? {position: `fixed`, inset: `0px`} : {}}
-				animate={appMode === `fullscreen` ? {borderRadius: `0px`} : {borderRadius: `16px`}}
-				transition={{duration: 1, ease: [0.65, 0, 0.35, 1]}}
+				animate={{borderRadius: appMode === `fullscreen` ? `0px` : `16px`, opacity: appMode === `switcher` ? 0 : 1}}
+				transition={{duration: 1, ease: [0.65, 0, 0.35, 1], opacity: {delay: 1}}}
 				className={clsx(
-					`relative z-10 overflow-hidden shadow-lg shadow-black/30`,
-					appMode === `description` && `h-full md:order-2 md:my-auto md:max-h-[30rem]`
+					`relative z-10 h-full overflow-hidden shadow-lg shadow-black/30`,
+					appMode === `description` && `md:order-2 md:my-auto md:max-h-[30rem]`,
+					appMode === `switcher` && `h-[90vw] w-[90vw]`
 				)}
 			>
 				<div className="absolute inset-0 overflow-hidden">{shader}</div>
 
-				<OverlayShadow />
 				<Overlay dayNumber={dayNumber} name={name} date={date} />
 			</motion.div>
 
@@ -89,7 +89,7 @@ const ShaderPage = ({dayNumber, name, date, accentColor, shader, description}: P
 
 			{/* BEGIN SWITCHER STUFF */}
 
-			{delayedAppMode === `switcher` && <div>switcher</div>}
+			{/* {delayedAppMode === `switcher` && <div>switcher</div>} */}
 		</div>
 	)
 }
