@@ -1,5 +1,12 @@
 const config = {
 	trailingSlash: true,
+	redirects: async () => [
+		{
+			source: `/`,
+			destination: `/function-plot/`,
+			permanent: false,
+		},
+	],
 	experimental: {
 		appDir: true,
 		fontLoaders: [

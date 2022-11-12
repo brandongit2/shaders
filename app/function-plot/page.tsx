@@ -12,6 +12,7 @@ const FunctionPlotPage = (): ReactElement | null => {
 			dayNumber={1}
 			name="Function plot"
 			date="10 Nov 2022"
+			accentColor="#22074a"
 			shader={<Canvas fragmentShader={fragmentShader} />}
 			description={
 				<>

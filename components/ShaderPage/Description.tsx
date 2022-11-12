@@ -9,7 +9,7 @@ import shallow from "zustand/shallow"
 
 import type {ReactElement, ReactNode} from "react"
 
-import useDescriptionStore from "./descriptionStore"
+import useStore from "./store"
 
 // eslint-disable-next-line @typescript-eslint/quotes
 const joan = Joan({weight: "400"})
@@ -24,7 +24,7 @@ const Description = ({children}: Props): ReactElement | null => {
 		setDescriptionPaddingTop,
 		setDescriptionPaddingBottom,
 		setScrollProgress,
-	} = useDescriptionStore(
+	} = useStore(
 		(state) => ({
 			descriptionPadding: state.descriptionPadding,
 			setDescriptionPaddingTop: state.setDescriptionPaddingTop,

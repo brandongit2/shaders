@@ -8,7 +8,11 @@ type SectionInfo = {
 }
 
 type DescriptionStore = {
-	isDescriptionOpen: boolean
+	appMode: `description` | `switcher` | `fullscreen`
+	delayedAppMode: `description` | `switcher` | `fullscreen` // For stuff that should happen after animation completes
+	setDelayedAppMode: (mode: `description` | `switcher` | `fullscreen`) => void
+
+	// Description stuff
 	toggleDescription: () => void
 	sectionInfo: Record<string, SectionInfo>
 	setSectionInfo: (name: string, info: Partial<SectionInfo>) => void
@@ -17,12 +21,25 @@ type DescriptionStore = {
 	setDescriptionPaddingBottom: (padding: number) => void
 	scrollProgress: number
 	setScrollProgress: (scrollProgress: number) => void
+
+	// Switcher stuff
+	toggleSwitcher: () => void
 }
 
-const useDescriptionStore = create(
+const useStore = create(
 	immer<DescriptionStore>((set) => ({
-		isDescriptionOpen: false,
-		toggleDescription: () => set((state) => void (state.isDescriptionOpen = !state.isDescriptionOpen)),
+		appMode: `fullscreen`,
+		delayedAppMode: `fullscreen`,
+		setDelayedAppMode: (mode) =>
+			set((state) => {
+				state.delayedAppMode = mode
+			}),
+
+		// Description stuff
+		toggleDescription: () =>
+			set((state) => {
+				state.appMode = state.appMode === `description` ? `fullscreen` : `description`
+			}),
 		sectionInfo: {},
 		setSectionInfo: (name, info) =>
 			set((state) => {
@@ -42,7 +59,14 @@ const useDescriptionStore = create(
 			}),
 		scrollProgress: 0,
 		setScrollProgress: (scrollProgress) => set({scrollProgress}),
+
+		// Switcher stuff
+		isSwitcherOpen: false,
+		toggleSwitcher: () =>
+			set((state) => {
+				state.appMode = state.appMode === `switcher` ? `fullscreen` : `switcher`
+			}),
 	}))
 )
 
-export default useDescriptionStore
+export default useStore

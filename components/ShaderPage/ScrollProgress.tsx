@@ -5,10 +5,10 @@ import shallow from "zustand/shallow"
 
 import type {ReactElement} from "react"
 
-import useDescriptionStore from "./descriptionStore"
+import useStore from "./store"
 
 const ScrollProgress = (): ReactElement | null => {
-	const {sectionInfo} = useDescriptionStore(
+	const {sectionInfo} = useStore(
 		(state) => ({sectionInfo: state.sectionInfo, scrollProgress: state.scrollProgress}),
 		shallow
 	)

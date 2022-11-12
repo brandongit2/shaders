@@ -3,11 +3,12 @@
 import clsx from "clsx"
 import {motion} from "framer-motion"
 import Link from "next/link"
+import {BsFillCollectionFill} from "react-icons/bs"
 import shallow from "zustand/shallow"
 
 import type {ReactElement} from "react"
 
-import useDescriptionStore from "./descriptionStore"
+import useStore from "./store"
 
 type Props = {
 	dayNumber: number
@@ -16,8 +17,12 @@ type Props = {
 }
 
 const Overlay = ({dayNumber, name, date}: Props): ReactElement | null => {
-	const {isDescriptionOpen, toggleDescription} = useDescriptionStore(
-		(state) => ({isDescriptionOpen: state.isDescriptionOpen, toggleDescription: state.toggleDescription}),
+	const {appMode, toggleDescription, toggleSwitcher} = useStore(
+		(state) => ({
+			appMode: state.appMode,
+			toggleDescription: state.toggleDescription,
+			toggleSwitcher: state.toggleSwitcher,
+		}),
 		shallow
 	)
 
@@ -26,14 +31,15 @@ const Overlay = ({dayNumber, name, date}: Props): ReactElement | null => {
 			<motion.div
 				layout
 				transition={{duration: 1, ease: [0.65, 0, 0.35, 1]}}
-				className={clsx(`absolute left-8`, isDescriptionOpen ? `bottom-6` : `bottom-14 sm:bottom-6`)}
+				animate={{opacity: appMode === `switcher` ? 0 : 1}}
+				className={clsx(`absolute left-8`, appMode === `description` ? `bottom-6` : `bottom-14 sm:bottom-6`)}
 			>
 				<h1 className="mb-1 text-xl font-bold">
 					<span className="font-normal text-white/60">Day {dayNumber} | </span>
 					{name}
 				</h1>
 				<button type="button" onClick={() => void toggleDescription()} className="text-left text-sm underline">
-					{isDescriptionOpen ? `Hide` : `Open`} description + breakdown
+					{appMode === `description` ? `Hide` : `Open`} description + breakdown
 				</button>
 			</motion.div>
 
@@ -42,10 +48,12 @@ const Overlay = ({dayNumber, name, date}: Props): ReactElement | null => {
 				transition={{
 					duration: 1,
 					ease: [0.65, 0, 0.35, 1],
-					opacity: {duration: 0.6, delay: isDescriptionOpen ? 0 : 0.4},
 				}}
-				animate={{opacity: isDescriptionOpen ? 0 : 1}}
-				className={clsx(`absolute left-8 bottom-6 sm:left-auto sm:right-8`, isDescriptionOpen && `pointer-events-none`)}
+				animate={{opacity: appMode === `fullscreen` ? 1 : 0}}
+				className={clsx(
+					`absolute bottom-6 max-sm:left-8 sm:right-8`,
+					appMode === `description` && `pointer-events-none`
+				)}
 			>
 				<p className="text-sm text-white/50">
 					By{` `}
@@ -55,6 +63,21 @@ const Overlay = ({dayNumber, name, date}: Props): ReactElement | null => {
 					{` `}on {date}.
 				</p>
 			</motion.div>
+
+			<motion.button
+				layout
+				transition={{
+					duration: 1,
+					ease: [0.65, 0, 0.35, 1],
+					opacity: {duration: 0.6, delay: appMode === `description` ? 0 : 0.4},
+				}}
+				animate={{opacity: appMode === `description` ? 0 : 0.9}}
+				type="button"
+				onClick={() => void toggleSwitcher()}
+				className="absolute right-8 bottom-8"
+			>
+				<BsFillCollectionFill size="1.5rem" />
+			</motion.button>
 		</>
 	)
 }

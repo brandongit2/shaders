@@ -19,7 +19,9 @@ const RootLayout = ({children}: Props): ReactElement | null => {
 
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 			</head>
-			<body className={clsx(font.className, `h-full bg-[#22074A]`)}>{children}</body>
+			<body className={clsx(font.className, `h-full bg-[#333] transition-[background-color] duration-1000`)}>
+				{children}
+			</body>
 		</html>
 	)
 }
