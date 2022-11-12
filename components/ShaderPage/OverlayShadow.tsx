@@ -7,7 +7,7 @@ import type {ReactElement} from "react"
 const OverlayShadow = (): ReactElement | null => {
 	return (
 		<motion.div
-			layout
+			layoutId="overlay-shadow"
 			transition={{duration: 1, ease: [0.65, 0, 0.35, 1]}}
 			className="absolute bottom-0 left-0 h-36 w-full"
 			style={{

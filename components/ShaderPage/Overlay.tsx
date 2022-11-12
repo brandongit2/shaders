@@ -29,7 +29,7 @@ const Overlay = ({dayNumber, name, date}: Props): ReactElement | null => {
 	return (
 		<>
 			<motion.div
-				layout
+				layoutId="overlay-title"
 				transition={{duration: 1, ease: [0.65, 0, 0.35, 1]}}
 				animate={{opacity: appMode === `switcher` ? 0 : 1}}
 				className={clsx(`absolute left-8`, appMode === `description` ? `bottom-6` : `bottom-14 sm:bottom-6`)}
@@ -44,7 +44,7 @@ const Overlay = ({dayNumber, name, date}: Props): ReactElement | null => {
 			</motion.div>
 
 			<motion.div
-				layout
+				layoutId="overlay-attribution"
 				transition={{
 					duration: 1,
 					ease: [0.65, 0, 0.35, 1],
@@ -65,7 +65,7 @@ const Overlay = ({dayNumber, name, date}: Props): ReactElement | null => {
 			</motion.div>
 
 			<motion.button
-				layout
+				layoutId="overlay-switcher"
 				transition={{
 					duration: 1,
 					ease: [0.65, 0, 0.35, 1],
