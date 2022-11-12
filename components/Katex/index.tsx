@@ -1,8 +1,7 @@
 import katex from "katex"
+import "katex/dist/katex.css"
 
 import type {ReactElement} from "react"
-
-import "./katex.css"
 
 type Props = {
 	children: string

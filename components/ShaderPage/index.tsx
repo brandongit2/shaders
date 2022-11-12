@@ -1,7 +1,7 @@
 "use client"
 
 import clsx from "clsx"
-import {AnimatePresence, motion} from "framer-motion"
+import {motion} from "framer-motion"
 import {useEffect} from "react"
 import shallow from "zustand/shallow"
 
