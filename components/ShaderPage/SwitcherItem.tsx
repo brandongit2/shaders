@@ -15,12 +15,17 @@ type Props = {
 const SwitcherItem = ({children, place, x}: Props): ReactElement | null => {
 	const [screenWidth, setScreenWidth] = useState(1024)
 	useEffect(() => {
-		setScreenWidth(window.innerWidth)
+		const updateScreenWidth = () => void setScreenWidth(window.innerWidth)
+		window.addEventListener(`resize`, updateScreenWidth)
+		return () => void window.removeEventListener(`resize`, updateScreenWidth)
 	}, [])
+	const itemWidth = Math.min(screenWidth / 2, 30 * 16)
+	console.log(itemWidth)
+	// const itemWidth = screenWidth
 
-	const spinAt = 80
+	const spinAt = itemWidth * 0.35
 
-	const itemSeparation = 120
+	const itemSeparation = itemWidth * 0.4
 	const u = useTransform(
 		x,
 		[0, screenWidth],
@@ -28,7 +33,7 @@ const SwitcherItem = ({children, place, x}: Props): ReactElement | null => {
 		{clamp: false},
 	)
 
-	const middleSpace = 160
+	const middleSpace = itemWidth * 0.3
 	const translateX = useTransform(u, (val) => {
 		if (val < -spinAt) return val - middleSpace
 		if (val >= -spinAt && val < 0) return val + smoothStep(-spinAt, 0, val) * middleSpace - middleSpace
@@ -37,7 +42,7 @@ const SwitcherItem = ({children, place, x}: Props): ReactElement | null => {
 	})
 
 	const defaultZ = -100
-	const deltaZ = 20
+	const deltaZ = 70
 	const translateZ = useTransform(u, (val) => {
 		if (val < 0) {
 			return smoothStep(-spinAt - 40, -spinAt + 40, val) * deltaZ + defaultZ
@@ -46,7 +51,7 @@ const SwitcherItem = ({children, place, x}: Props): ReactElement | null => {
 		}
 	})
 
-	const rotationAmount = 50
+	const rotationAmount = 70
 	const rotation = useTransform(u, (val) => {
 		if (val < 0) {
 			return (1 - smoothStep(-spinAt, 0, val)) * rotationAmount
