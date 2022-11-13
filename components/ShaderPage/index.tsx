@@ -46,7 +46,7 @@ const ShaderPage = ({dayNumber, name, date, accentColor, shader, description, im
 	}, [appMode, delayedAppMode, setDelayedAppMode])
 
 	useEffect(() => {
-		document.body.style.backgroundColor = appMode === `switcher` ? `#333` : accentColor
+		document.body.style.backgroundColor = appMode === `switcher` ? `#222` : accentColor
 	}, [accentColor, appMode])
 
 	return (

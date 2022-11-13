@@ -13,7 +13,7 @@ const Switcher = (): ReactElement | null => {
 		<>
 			<motion.div
 				onPointerDown={(evt) => void controls.start(evt)}
-				className="fixed top-1/2 left-0 h-[min(50vw,30rem)] w-full -translate-y-1/2 touch-none [perspective:1500px]"
+				className="fixed top-1/2 left-0 h-[min(50vw,30rem)] w-full -translate-y-1/2 cursor-grab touch-none [perspective:1500px] active:cursor-grabbing"
 			>
 				{shaderList.map((shader, i) => (
 					<SwitcherItem key={shader.day} place={i} x={x}>

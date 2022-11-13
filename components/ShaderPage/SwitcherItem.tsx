@@ -56,15 +56,26 @@ const SwitcherItem = ({children, place, x}: Props): ReactElement | null => {
 	})
 
 	return (
-		<motion.div
-			style={{
-				transform: useMotionTemplate`translateX(${translateX}px) translateZ(${translateZ}px) translateX(-50%) rotateY(${rotation}deg)`,
-				zIndex: useTransform(u, (val) => -Math.abs(val)),
-			}}
-			className="pointer-events-none absolute left-1/2 h-[min(50vw,30rem)] w-[min(50vw,30rem)]"
-		>
-			{children}
-		</motion.div>
+		<>
+			<motion.div
+				style={{
+					transform: useMotionTemplate`translateX(${translateX}px) translateZ(${translateZ}px) translateX(-50%) rotateY(${rotation}deg)`,
+					zIndex: useTransform(u, (val) => -Math.abs(val)),
+				}}
+				className="pointer-events-none absolute left-1/2 h-[min(50vw,30rem)] w-[min(50vw,30rem)] overflow-hidden rounded-[16px]"
+			>
+				{children}
+			</motion.div>
+			<motion.div
+				style={{
+					transform: useMotionTemplate`translateX(${translateX}px) translateZ(${translateZ}px) translate(-50%, 100%) scaleY(-1) rotateY(${rotation}deg)`,
+					zIndex: useTransform(u, (val) => -Math.abs(val)),
+				}}
+				className="pointer-events-none absolute left-1/2 h-[min(50vw,30rem)] w-[min(50vw,30rem)] overflow-hidden rounded-[16px] bg-[#222] saturate-[80%] [&>*]:opacity-20"
+			>
+				{children}
+			</motion.div>
+		</>
 	)
 }
 
