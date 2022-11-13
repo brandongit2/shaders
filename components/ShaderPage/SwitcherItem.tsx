@@ -28,12 +28,12 @@ const SwitcherItem = ({children, place, x}: Props): ReactElement | null => {
 		{clamp: false},
 	)
 
-	const d = 200
+	const middleSpace = 160
 	const translateX = useTransform(u, (val) => {
-		if (val < -spinAt) return val - d
-		if (val >= -spinAt && val < 0) return val + smoothStep(-spinAt, 0, val) * d - d
-		if (val >= 0 && val <= spinAt) return val + smoothStep(0, spinAt, val) * d
-		if (val > spinAt) return val + d
+		if (val < -spinAt) return val - middleSpace
+		if (val >= -spinAt && val < 0) return val + smoothStep(-spinAt, 0, val) * middleSpace - middleSpace
+		if (val >= 0 && val <= spinAt) return val + smoothStep(0, spinAt, val) * middleSpace
+		if (val > spinAt) return val + middleSpace
 	})
 
 	const defaultZ = -100
@@ -46,7 +46,7 @@ const SwitcherItem = ({children, place, x}: Props): ReactElement | null => {
 		}
 	})
 
-	const rotationAmount = 80
+	const rotationAmount = 50
 	const rotation = useTransform(u, (val) => {
 		if (val < 0) {
 			return (1 - smoothStep(-spinAt, 0, val)) * rotationAmount
