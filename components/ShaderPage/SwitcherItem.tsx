@@ -16,12 +16,13 @@ const SwitcherItem = ({children, place, x}: Props): ReactElement | null => {
 	const [screenWidth, setScreenWidth] = useState(1024)
 	useEffect(() => {
 		const updateScreenWidth = () => void setScreenWidth(window.innerWidth)
+		updateScreenWidth()
+
 		window.addEventListener(`resize`, updateScreenWidth)
 		return () => void window.removeEventListener(`resize`, updateScreenWidth)
 	}, [])
 	const itemWidth = Math.min(screenWidth / 2, 30 * 16)
-	console.log(itemWidth)
-	// const itemWidth = screenWidth
+	console.log(screenWidth)
 
 	const spinAt = itemWidth * 0.35
 
