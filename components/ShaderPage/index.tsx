@@ -11,6 +11,7 @@ import Description from "../../components/ShaderPage/Description"
 import Overlay from "./Overlay"
 import ScrollProgress from "./ScrollProgress"
 import useStore from "./store"
+import Switcher from "./Switcher"
 
 type Props = {
 	dayNumber: number
@@ -19,16 +20,17 @@ type Props = {
 	accentColor: string
 	shader: ReactNode
 	description: ReactNode
+	image: ReactNode
 }
 
-const ShaderPage = ({dayNumber, name, date, accentColor, shader, description}: Props): ReactElement | null => {
+const ShaderPage = ({dayNumber, name, date, accentColor, shader, description, image}: Props): ReactElement | null => {
 	const {appMode, delayedAppMode, setDelayedAppMode} = useStore(
 		(state) => ({
 			appMode: state.appMode,
 			delayedAppMode: state.delayedAppMode,
 			setDelayedAppMode: state.setDelayedAppMode,
 		}),
-		shallow
+		shallow,
 	)
 
 	useEffect(() => {
@@ -53,19 +55,22 @@ const ShaderPage = ({dayNumber, name, date, accentColor, shader, description}: P
 				`h-full`,
 				(appMode === `description` || delayedAppMode === `description`) &&
 					`mx-auto grid max-w-4xl gap-6 p-2 max-md:grid-rows-[min(100vw,50vh)_auto] md:grid-cols-2 md:p-6`,
-				(appMode === `switcher` || delayedAppMode === `switcher`) && `grid place-items-center`
+				(appMode === `switcher` || delayedAppMode === `switcher`) && `grid place-items-center`,
 			)}
 		>
-			{/* The canvas */}
 			<motion.div
 				layout
 				style={appMode === `fullscreen` ? {position: `fixed`, inset: `0px`} : {}}
 				animate={{borderRadius: appMode === `fullscreen` ? `0px` : `16px`, opacity: appMode === `switcher` ? 0 : 1}}
-				transition={{duration: 1, ease: [0.65, 0, 0.35, 1], opacity: {delay: 1}}}
+				transition={{
+					duration: 1,
+					ease: [0.65, 0, 0.35, 1],
+					opacity: {delay: 1, transitionEnd: {pointerEvents: appMode === `switcher` ? `none` : `unset`}},
+				}}
 				className={clsx(
 					`relative z-10 h-full overflow-hidden shadow-lg shadow-black/30`,
 					appMode === `description` && `md:order-2 md:my-auto md:max-h-[30rem]`,
-					appMode === `switcher` && `h-[90vw] w-[90vw]`
+					appMode === `switcher` && `pointer-events-none h-[min(50vw,30rem)] w-[min(50vw,30rem)]`,
 				)}
 			>
 				<div className="absolute inset-0 overflow-hidden">{shader}</div>
@@ -89,7 +94,7 @@ const ShaderPage = ({dayNumber, name, date, accentColor, shader, description}: P
 
 			{/* BEGIN SWITCHER STUFF */}
 
-			{/* {delayedAppMode === `switcher` && <div>switcher</div>} */}
+			{delayedAppMode === `switcher` && <Switcher />}
 		</div>
 	)
 }

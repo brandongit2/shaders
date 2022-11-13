@@ -34,7 +34,7 @@ const DescriptionSection = ({children, name, last}: Props): ReactElement | null 
 				bottom: (section.offsetTop + section.offsetHeight) / scroller.scrollHeight,
 			})
 		},
-		[inView, name, setSectionInfo]
+		[inView, name, setSectionInfo],
 	)
 
 	return (
@@ -44,7 +44,7 @@ const DescriptionSection = ({children, name, last}: Props): ReactElement | null 
 			className={clsx(
 				`py-4 transition-colors duration-300`,
 				!inView && `text-white/50`,
-				!last && `border-b border-white/20`
+				!last && `border-b border-white/20`,
 			)}
 		>
 			{children}

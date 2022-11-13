@@ -73,7 +73,7 @@ const Canvas = ({fragmentShader: fragmentShaderSource}: Props): ReactElement | n
 			gl.enableVertexAttribArray(positionAttributeLocation)
 			gl.vertexAttribPointer(positionAttributeLocation, 2, gl.FLOAT, false, 0, 0)
 		},
-		[fragmentShaderSource]
+		[fragmentShaderSource],
 	)
 
 	// Update canvas resolution. Debounced for performance.
@@ -86,7 +86,7 @@ const Canvas = ({fragmentShader: fragmentShaderSource}: Props): ReactElement | n
 			canvas.height = (contentRect.height || 0) * devicePixelRatio
 		},
 		100,
-		[contentRect]
+		[contentRect],
 	)
 
 	// Render loop

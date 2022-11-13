@@ -10,7 +10,7 @@ import useStore from "./store"
 const ScrollProgress = (): ReactElement | null => {
 	const {sectionInfo} = useStore(
 		(state) => ({sectionInfo: state.sectionInfo, scrollProgress: state.scrollProgress}),
-		shallow
+		shallow,
 	)
 
 	return (
@@ -22,7 +22,7 @@ const ScrollProgress = (): ReactElement | null => {
 					key={i}
 					className={clsx(
 						`absolute h-2 w-2 -translate-x-1/2 rounded-full transition-[transform,background-color]`,
-						section.isActive ? `scale-150 bg-yellow-500` : `bg-[#a79db7]`
+						section.isActive ? `scale-150 bg-yellow-500` : `bg-[#a79db7]`,
 					)}
 					style={{top: `${((section.top + section.bottom) / 2) * 100}%`}}
 				/>

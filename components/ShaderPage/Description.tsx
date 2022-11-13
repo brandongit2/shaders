@@ -31,7 +31,7 @@ const Description = ({children}: Props): ReactElement | null => {
 			setDescriptionPaddingBottom: state.setDescriptionPaddingBottom,
 			setScrollProgress: state.setScrollProgress,
 		}),
-		shallow
+		shallow,
 	)
 
 	const updateDescriptionPadding = useCallback(() => {

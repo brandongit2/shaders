@@ -9,7 +9,8 @@ type SectionInfo = {
 
 type DescriptionStore = {
 	appMode: `description` | `switcher` | `fullscreen`
-	delayedAppMode: `description` | `switcher` | `fullscreen` // For stuff that should happen after animation completes
+	// For stuff that should happen after animation completes. Only delayed on the animation back to fullscreen, otherwise instant.
+	delayedAppMode: `description` | `switcher` | `fullscreen`
 	setDelayedAppMode: (mode: `description` | `switcher` | `fullscreen`) => void
 
 	// Description stuff
@@ -66,7 +67,7 @@ const useStore = create(
 			set((state) => {
 				state.appMode = state.appMode === `switcher` ? `fullscreen` : `switcher`
 			}),
-	}))
+	})),
 )
 
 export default useStore

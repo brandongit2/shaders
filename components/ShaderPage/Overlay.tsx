@@ -23,7 +23,7 @@ const Overlay = ({dayNumber, name, date}: Props): ReactElement | null => {
 			toggleDescription: state.toggleDescription,
 			toggleSwitcher: state.toggleSwitcher,
 		}),
-		shallow
+		shallow,
 	)
 
 	return (
@@ -74,7 +74,7 @@ const Overlay = ({dayNumber, name, date}: Props): ReactElement | null => {
 				animate={{opacity: appMode === `fullscreen` ? 1 : 0}}
 				className={clsx(
 					`absolute bottom-6 max-sm:left-8 sm:right-8`,
-					appMode === `description` && `pointer-events-none`
+					appMode === `description` && `pointer-events-none`,
 				)}
 			>
 				<p className="text-sm text-white/50">
