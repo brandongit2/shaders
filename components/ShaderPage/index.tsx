@@ -20,10 +20,9 @@ type Props = {
 	accentColor: string
 	shader: ReactNode
 	description: ReactNode
-	image: ReactNode
 }
 
-const ShaderPage = ({dayNumber, name, date, accentColor, shader, description, image}: Props): ReactElement | null => {
+const ShaderPage = ({dayNumber, name, date, accentColor, shader, description}: Props): ReactElement | null => {
 	const {appMode, delayedAppMode, setDelayedAppMode} = useStore(
 		(state) => ({
 			appMode: state.appMode,
