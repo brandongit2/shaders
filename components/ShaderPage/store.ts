@@ -29,8 +29,8 @@ type DescriptionStore = {
 
 const useStore = create(
 	immer<DescriptionStore>((set) => ({
-		appMode: `fullscreen`,
-		delayedAppMode: `fullscreen`,
+		appMode: `switcher`,
+		delayedAppMode: `switcher`,
 		setDelayedAppMode: (mode) =>
 			set((state) => {
 				state.delayedAppMode = mode

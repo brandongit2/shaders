@@ -10,9 +10,10 @@ type Props = {
 	children: ReactNode
 	place: number
 	x: MotionValue<number>
+	offset: MotionValue<number>
 }
 
-const SwitcherItem = ({children, place, x}: Props): ReactElement | null => {
+const SwitcherItem = ({children, place, x, offset}: Props): ReactElement | null => {
 	const [screenWidth, setScreenWidth] = useState(1024)
 	useEffect(() => {
 		const updateScreenWidth = () => void setScreenWidth(window.innerWidth)
@@ -22,17 +23,13 @@ const SwitcherItem = ({children, place, x}: Props): ReactElement | null => {
 		return () => void window.removeEventListener(`resize`, updateScreenWidth)
 	}, [])
 	const itemWidth = Math.min(screenWidth / 2, 30 * 16)
-	console.log(screenWidth)
 
 	const spinAt = itemWidth * 0.35
 
 	const itemSeparation = itemWidth * 0.4
-	const u = useTransform(
-		x,
-		[0, screenWidth],
-		[-screenWidth / 2 + place * itemSeparation, screenWidth / 2 + place * itemSeparation],
-		{clamp: false},
-	)
+	const u = useTransform(x, (val) => {
+		return val + (place - offset.get()) * itemSeparation
+	})
 
 	const middleSpace = itemWidth * 0.3
 	const translateX = useTransform(u, (val) => {
