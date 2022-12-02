@@ -3,7 +3,7 @@ import Image from "next/image"
 import type {ReactNode} from "react"
 
 // import day1Img from "~/app/function-plot/screenshot.png"
-import day1Img from "./img.jpg"
+import day1Img from "./switcher-mode/img.jpg"
 
 type Shader = {
 	image: ReactNode

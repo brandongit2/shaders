@@ -1,18 +1,10 @@
-import {animate, motion, useDragControls, useMotionTemplate, useMotionValue, useTransform} from "framer-motion"
+import {motion, useDragControls, useMotionValue} from "framer-motion"
 import {useEffect, useState} from "react"
 
-import type {AnimationOptions} from "framer-motion"
 import type {ReactElement} from "react"
 
-import shaderList from "./shaderList"
+import shaderList from "../shaderList"
 import SwitcherItem from "./SwitcherItem"
-
-const animOptions: AnimationOptions<number> = {
-	type: `spring`,
-	damping: 17,
-	stiffness: 150,
-	mass: 1,
-}
 
 const Switcher = (): ReactElement | null => {
 	const x = useMotionValue(0)
@@ -43,15 +35,13 @@ const Switcher = (): ReactElement | null => {
 			</motion.div>
 			<motion.div
 				drag="x"
-				dragSnapToOrigin
 				dragControls={controls}
-				dragConstraints={{left: 0, right: 0}}
-				dragElastic={0.7}
-				dragTransition={animOptions}
-				onDragEnd={() => {
-					const xWithOffset = offset.get() * itemSeparation - x.get()
-					const newOffset = Math.max(0, Math.min(Math.round(xWithOffset / itemSeparation), shaderList.length - 1))
-					return animate(offset, newOffset, animOptions)
+				dragTransition={{
+					power: 0.5,
+					timeConstant: 200,
+					min: -(shaderList.length - 1) * itemSeparation,
+					max: 0,
+					modifyTarget: (target) => Math.round(target / itemSeparation) * itemSeparation,
 				}}
 				onUpdate={(latest) => void x.set(Number(latest.x))}
 			/>

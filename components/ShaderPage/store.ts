@@ -1,5 +1,5 @@
+import produce from "immer"
 import create from "zustand"
-import {immer} from "zustand/middleware/immer"
 
 type SectionInfo = {
 	isActive: boolean
@@ -27,47 +27,44 @@ type DescriptionStore = {
 	toggleSwitcher: () => void
 }
 
-const useStore = create(
-	immer<DescriptionStore>((set) => ({
-		appMode: `switcher`,
-		delayedAppMode: `switcher`,
-		setDelayedAppMode: (mode) =>
-			set((state) => {
-				state.delayedAppMode = mode
-			}),
+const useStore = create<DescriptionStore>((set) => ({
+	appMode: `switcher`,
+	delayedAppMode: `switcher`,
+	setDelayedAppMode: (mode) => void set(() => ({delayedAppMode: mode})),
 
-		// Description stuff
-		toggleDescription: () =>
-			set((state) => {
-				state.appMode = state.appMode === `description` ? `fullscreen` : `description`
-			}),
-		sectionInfo: {},
-		setSectionInfo: (name, info) =>
-			set((state) => {
-				state.sectionInfo[name] = {
+	// Description stuff
+	toggleDescription: () =>
+		void set((state) => ({appMode: state.appMode === `description` ? `fullscreen` : `description`})),
+	sectionInfo: {},
+	setSectionInfo: (name, info) =>
+		void set((state) => ({
+			sectionInfo: {
+				...state.sectionInfo,
+				[name]: {
 					...(state.sectionInfo[name] ?? {isActive: false, top: 0, bottom: 0}),
 					...info,
-				}
-			}),
-		descriptionPadding: [0, 0],
-		setDescriptionPaddingTop: (padding) =>
-			set((state) => {
+				},
+			},
+		})),
+	descriptionPadding: [0, 0],
+	setDescriptionPaddingTop: (padding) =>
+		void set(
+			produce((state) => {
 				state.descriptionPadding[0] = padding
 			}),
-		setDescriptionPaddingBottom: (padding) =>
-			set((state) => {
+		),
+	setDescriptionPaddingBottom: (padding) =>
+		void set(
+			produce((state) => {
 				state.descriptionPadding[1] = padding
 			}),
-		scrollProgress: 0,
-		setScrollProgress: (scrollProgress) => set({scrollProgress}),
+		),
+	scrollProgress: 0,
+	setScrollProgress: (scrollProgress) => void set({scrollProgress}),
 
-		// Switcher stuff
-		isSwitcherOpen: false,
-		toggleSwitcher: () =>
-			set((state) => {
-				state.appMode = state.appMode === `switcher` ? `fullscreen` : `switcher`
-			}),
-	})),
-)
+	// Switcher stuff
+	isSwitcherOpen: false,
+	toggleSwitcher: () => void set((state) => ({appMode: state.appMode === `switcher` ? `fullscreen` : `switcher`})),
+}))
 
 export default useStore

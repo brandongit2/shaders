@@ -1,14 +1,14 @@
 import {Familjen_Grotesk} from "@next/font/google"
 import clsx from "clsx"
 
-import type {ReactElement} from "react"
+import type {ReactElement, ReactNode} from "react"
 
 import "./styles.css"
 
 const font = Familjen_Grotesk()
 
 type Props = {
-	children: React.ReactNode
+	children: ReactNode
 }
 
 const RootLayout = ({children}: Props): ReactElement | null => {

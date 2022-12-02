@@ -4,7 +4,7 @@ import {fragmentShader} from "./shader"
 import Canvas from "~/components/Canvas"
 import Katex from "~/components/Katex"
 import ShaderPage from "~/components/ShaderPage"
-import DescriptionSection from "~/components/ShaderPage/DescriptionSection"
+import DescriptionSection from "~/components/ShaderPage/description-mode/DescriptionSection"
 
 const FunctionPlotPage = (): ReactElement | null => {
 	return (

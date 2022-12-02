@@ -9,7 +9,7 @@ import shallow from "zustand/shallow"
 
 import type {ReactElement, ReactNode} from "react"
 
-import useStore from "./store"
+import useStore from "../store"
 
 // eslint-disable-next-line @typescript-eslint/quotes
 const joan = Joan({weight: "400"})

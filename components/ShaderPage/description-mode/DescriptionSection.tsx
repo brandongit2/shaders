@@ -7,7 +7,7 @@ import {mergeRefs} from "react-merge-refs"
 
 import type {ReactElement, ReactNode} from "react"
 
-import useStore from "./store"
+import useStore from "../store"
 
 type Props = {
 	children: ReactNode

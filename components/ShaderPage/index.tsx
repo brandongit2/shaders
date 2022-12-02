@@ -7,11 +7,11 @@ import shallow from "zustand/shallow"
 
 import type {ReactElement, ReactNode} from "react"
 
-import Description from "../../components/ShaderPage/Description"
+import Description from "./description-mode/Description"
+import ScrollProgress from "./description-mode/ScrollProgress"
 import Overlay from "./Overlay"
-import ScrollProgress from "./ScrollProgress"
 import useStore from "./store"
-import Switcher from "./Switcher"
+import Switcher from "./switcher-mode/Switcher"
 
 type Props = {
 	dayNumber: number
