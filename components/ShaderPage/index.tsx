@@ -1,36 +1,28 @@
 "use client"
 
 import clsx from "clsx"
-import {motion} from "framer-motion"
+import {AnimatePresence, motion} from "framer-motion"
 import {useEffect} from "react"
-import shallow from "zustand/shallow"
 
-import type {ReactElement, ReactNode} from "react"
+import type {ReactNode, FC} from "react"
 
 import Description from "./description-mode/Description"
 import ScrollProgress from "./description-mode/ScrollProgress"
 import Overlay from "./Overlay"
 import useStore from "./store"
 import Switcher from "./switcher-mode/Switcher"
+import {useIsBrowser} from "~/utils/useIsBrowser"
 
 type Props = {
-	dayNumber: number
-	name: string
-	date: string
-	accentColor: string
-	shader: ReactNode
-	description: ReactNode
+	children: ReactNode
 }
 
-const ShaderPage = ({dayNumber, name, date, accentColor, shader, description}: Props): ReactElement | null => {
-	const {appMode, delayedAppMode, setDelayedAppMode} = useStore(
-		(state) => ({
-			appMode: state.appMode,
-			delayedAppMode: state.delayedAppMode,
-			setDelayedAppMode: state.setDelayedAppMode,
-		}),
-		shallow,
-	)
+const ShaderPage: FC<Props> = ({children}) => {
+	const appMode = useStore((state) => state.appMode)
+	const delayedAppMode = useStore((state) => state.delayedAppMode)
+	const setDelayedAppMode = useStore((state) => state.setDelayedAppMode)
+	const shader = useStore((state) => state.shader)
+	const isBrowser = useIsBrowser()
 
 	useEffect(() => {
 		if (appMode === delayedAppMode) return
@@ -38,15 +30,13 @@ const ShaderPage = ({dayNumber, name, date, accentColor, shader, description}: P
 		if (appMode !== `fullscreen`) {
 			setDelayedAppMode(appMode)
 		} else {
-			setTimeout(() => {
-				setDelayedAppMode(appMode)
-			}, 1000)
+			setTimeout(() => void setDelayedAppMode(appMode), 1000)
 		}
 	}, [appMode, delayedAppMode, setDelayedAppMode])
 
 	useEffect(() => {
-		document.body.style.backgroundColor = appMode === `switcher` ? `#222` : accentColor
-	}, [accentColor, appMode])
+		document.body.style.backgroundColor = appMode === `switcher` ? `#222` : `#22074a`
+	}, [appMode])
 
 	return (
 		<div
@@ -57,25 +47,30 @@ const ShaderPage = ({dayNumber, name, date, accentColor, shader, description}: P
 				(appMode === `switcher` || delayedAppMode === `switcher`) && `grid place-items-center`,
 			)}
 		>
-			<motion.div
-				layout
-				style={appMode === `fullscreen` ? {position: `fixed`, inset: `0px`} : {}}
-				animate={{borderRadius: appMode === `fullscreen` ? `0px` : `16px`, opacity: appMode === `switcher` ? 0 : 1}}
-				transition={{
-					duration: 1,
-					ease: [0.65, 0, 0.35, 1],
-					opacity: {delay: 1, transitionEnd: {pointerEvents: appMode === `switcher` ? `none` : `unset`}},
-				}}
-				className={clsx(
-					`relative z-10 h-full overflow-hidden shadow-lg shadow-black/30`,
-					appMode === `description` && `md:order-2 md:my-auto md:max-h-[30rem]`,
-					appMode === `switcher` && `pointer-events-none h-[min(50vw,30rem)] w-[min(50vw,30rem)]`,
-				)}
-			>
-				<div className="absolute inset-0 overflow-hidden">{shader}</div>
+			<AnimatePresence custom={appMode}>
+				{appMode === `fullscreen` && (
+					<motion.div
+						layout
+						style={{position: `fixed`, inset: `0px`}}
+						animate={{borderRadius: `16px`, opacity: 1}}
+						exit={{borderRadius: `0px`, opacity: 0}}
+						transition={{
+							duration: 1,
+							ease: [0.65, 0, 0.35, 1],
+							opacity: {delay: 1},
+						}}
+						className={clsx(
+							`relative z-10 h-full overflow-hidden shadow-lg shadow-black/30`,
+							appMode === `description` && `md:order-2 md:my-auto md:max-h-[30rem]`,
+							appMode === `switcher` && `pointer-events-none h-[min(50vw,30rem)] w-[min(50vw,30rem)]`,
+						)}
+					>
+						<div className="absolute inset-0 overflow-hidden">{children}</div>
 
-				<Overlay dayNumber={dayNumber} name={name} date={date} />
-			</motion.div>
+						<Overlay />
+					</motion.div>
+				)}
+			</AnimatePresence>
 
 			{/* BEGIN DESCRIPTION STUFF */}
 
@@ -87,13 +82,17 @@ const ShaderPage = ({dayNumber, name, date, accentColor, shader, description}: P
 					<div className="grid place-items-center">
 						<ScrollProgress />
 					</div>
-					<Description>{description}</Description>
+					{shader && <Description>{shader.description}</Description>}
 				</div>
 			)}
 
 			{/* BEGIN SWITCHER STUFF */}
 
-			{delayedAppMode === `switcher` && <Switcher />}
+			{delayedAppMode === `switcher` && isBrowser && (
+				<div className="absolute">
+					<Switcher />
+				</div>
+			)}
 		</div>
 	)
 }

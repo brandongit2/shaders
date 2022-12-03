@@ -1,6 +1,8 @@
 import produce from "immer"
 import create from "zustand"
 
+import type {Shader} from "./types"
+
 type SectionInfo = {
 	isActive: boolean
 	top: number
@@ -12,6 +14,9 @@ type DescriptionStore = {
 	// For stuff that should happen after animation completes. Only delayed on the animation back to fullscreen, otherwise instant.
 	delayedAppMode: `description` | `switcher` | `fullscreen`
 	setDelayedAppMode: (mode: `description` | `switcher` | `fullscreen`) => void
+
+	shader: Shader | null
+	setShader: (shader: Shader) => void
 
 	// Description stuff
 	toggleDescription: () => void
@@ -28,9 +33,12 @@ type DescriptionStore = {
 }
 
 const useStore = create<DescriptionStore>((set) => ({
-	appMode: `switcher`,
-	delayedAppMode: `switcher`,
+	appMode: `fullscreen`,
+	delayedAppMode: `fullscreen`,
 	setDelayedAppMode: (mode) => void set(() => ({delayedAppMode: mode})),
+
+	shader: null,
+	setShader: (shader) => void set(() => ({shader})),
 
 	// Description stuff
 	toggleDescription: () =>

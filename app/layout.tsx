@@ -1,9 +1,13 @@
+"use client"
+
 import {Familjen_Grotesk} from "@next/font/google"
 import clsx from "clsx"
 
 import type {ReactElement, ReactNode} from "react"
 
 import "./styles.css"
+import ShaderPage from "~/components/ShaderPage"
+import "~/utils/logger-dev-only"
 
 const font = Familjen_Grotesk()
 
@@ -20,7 +24,7 @@ const RootLayout = ({children}: Props): ReactElement | null => {
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 			</head>
 			<body className={clsx(font.className, `h-full bg-[#222] text-white transition-[background-color] duration-1000`)}>
-				{children}
+				<ShaderPage>{children}</ShaderPage>
 			</body>
 		</html>
 	)

@@ -1,34 +1,38 @@
+"use client"
+
 import {motion, useMotionTemplate, useTransform} from "framer-motion"
-import {useEffect, useState} from "react"
+import {usePathname, useRouter} from "next/navigation"
 
 import type {MotionValue} from "framer-motion"
-import type {ReactElement, ReactNode} from "react"
+import type {ReactElement} from "react"
 
+import shaderList from "../shaderList"
+import useStore from "../store"
 import {smoothStep} from "~/helpers/math"
+import {useScreenWidth} from "~/utils/useScreenWidth"
 
 type Props = {
-	children: ReactNode
-	place: number
+	shaderSlug: string
 	x: MotionValue<number>
 	offset: MotionValue<number>
 }
 
-const SwitcherItem = ({children, place, x, offset}: Props): ReactElement | null => {
-	const [screenWidth, setScreenWidth] = useState(1024)
-	useEffect(() => {
-		const updateScreenWidth = () => void setScreenWidth(window.innerWidth)
-		updateScreenWidth()
+const SwitcherItem = ({shaderSlug, x, offset}: Props): ReactElement | null => {
+	const screenWidth = useScreenWidth()!
+	const router = useRouter()
+	const pathname = usePathname()
+	const currentShader = useStore((state) => state.shader)
+	const toggleSwitcher = useStore((state) => state.toggleSwitcher)
 
-		window.addEventListener(`resize`, updateScreenWidth)
-		return () => void window.removeEventListener(`resize`, updateScreenWidth)
-	}, [])
 	const itemWidth = Math.min(screenWidth / 2, 30 * 16)
+	const shader = shaderList.find((shader) => shader.slug === shaderSlug)!
+	const shaderIndex = shaderList.findIndex((shader) => shader.slug === shaderSlug)
 
 	const spinAt = itemWidth * 0.35
 
 	const itemSeparation = itemWidth * 0.4
 	const u = useTransform(x, (val) => {
-		return val + (place - offset.get()) * itemSeparation
+		return val + (shaderIndex - offset.get()) * itemSeparation
 	})
 
 	const middleSpace = itemWidth * 0.3
@@ -39,7 +43,7 @@ const SwitcherItem = ({children, place, x, offset}: Props): ReactElement | null 
 		if (val > spinAt) return val + middleSpace
 	})
 
-	const defaultZ = -100
+	const defaultZ = -70
 	const deltaZ = 70
 	const translateZ = useTransform(u, (val) => {
 		if (val < 0) {
@@ -61,13 +65,20 @@ const SwitcherItem = ({children, place, x, offset}: Props): ReactElement | null 
 	return (
 		<>
 			<motion.div
+				className="absolute left-1/2 h-[min(50vw,30rem)] w-[min(50vw,30rem)] overflow-hidden rounded-[16px]"
 				style={{
 					transform: useMotionTemplate`translateX(${translateX}px) translateZ(${translateZ}px) translateX(-50%) rotateY(${rotation}deg)`,
 					zIndex: useTransform(u, (val) => -Math.abs(val)),
 				}}
-				className="pointer-events-none absolute left-1/2 h-[min(50vw,30rem)] w-[min(50vw,30rem)] overflow-hidden rounded-[16px]"
+				onClick={() => {
+					if (pathname === `/${currentShader?.slug}/`) {
+						toggleSwitcher()
+					} else {
+						router.push(shader.slug)
+					}
+				}}
 			>
-				{children}
+				{shader.image}
 			</motion.div>
 			<motion.div
 				style={{
@@ -76,7 +87,7 @@ const SwitcherItem = ({children, place, x, offset}: Props): ReactElement | null 
 				}}
 				className="pointer-events-none absolute left-1/2 h-[min(50vw,30rem)] w-[min(50vw,30rem)] overflow-hidden rounded-[16px] bg-[#222] saturate-[80%] [&>*]:opacity-20"
 			>
-				{children}
+				{shader.image}
 			</motion.div>
 		</>
 	)

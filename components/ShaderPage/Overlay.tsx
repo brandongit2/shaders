@@ -4,28 +4,18 @@ import clsx from "clsx"
 import {motion} from "framer-motion"
 import Link from "next/link"
 import {BsFillCollectionFill} from "react-icons/bs"
-import shallow from "zustand/shallow"
 
-import type {ReactElement} from "react"
+import type {FC} from "react"
 
 import useStore from "./store"
 
-type Props = {
-	dayNumber: number
-	name: string
-	date: string
-}
+const Overlay: FC = () => {
+	const appMode = useStore((state) => state.appMode)
+	const toggleDescription = useStore((state) => state.toggleDescription)
+	const toggleSwitcher = useStore((state) => state.toggleSwitcher)
+	const shader = useStore((state) => state.shader)
 
-const Overlay = ({dayNumber, name, date}: Props): ReactElement | null => {
-	const {appMode, toggleDescription, toggleSwitcher} = useStore(
-		(state) => ({
-			appMode: state.appMode,
-			toggleDescription: state.toggleDescription,
-			toggleSwitcher: state.toggleSwitcher,
-		}),
-		shallow,
-	)
-
+	if (!shader) return null
 	return (
 		<>
 			<motion.div
@@ -57,8 +47,8 @@ const Overlay = ({dayNumber, name, date}: Props): ReactElement | null => {
 				className={clsx(`absolute left-8`, appMode === `description` ? `bottom-6` : `bottom-14 sm:bottom-6`)}
 			>
 				<h1 className="mb-1 text-xl font-bold">
-					<span className="font-normal text-white/60">Day {dayNumber} | </span>
-					{name}
+					<span className="font-normal text-white/60">Day {shader.day} | </span>
+					{shader.name}
 				</h1>
 				<button type="button" onClick={() => void toggleDescription()} className="text-left text-sm underline">
 					{appMode === `description` ? `Hide` : `Open`} description + breakdown
@@ -82,7 +72,7 @@ const Overlay = ({dayNumber, name, date}: Props): ReactElement | null => {
 					<Link href="https://www.brandontsang.net/" target="_blank" className="underline">
 						Brandon Tsang
 					</Link>
-					{` `}on {date}.
+					{` `}on {shader.date}.
 				</p>
 			</motion.div>
 
