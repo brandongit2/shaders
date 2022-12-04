@@ -16,19 +16,19 @@ type SectionInfo = {
 	bottom: number
 }
 
+type AppMode = `description` | `switcher` | `fullscreen`
+
 export type MainStore = {
-	appMode: `description` | `switcher` | `fullscreen`
-	// For stuff that should happen after animation completes. Only delayed on the animation back to fullscreen, otherwise instant.
-	delayedAppMode: `description` | `switcher` | `fullscreen`
-	setDelayedAppMode: (mode: `description` | `switcher` | `fullscreen`) => void
+	appMode: AppMode
+	beginTransition: (to: AppMode) => void
+	prevAppMode: AppMode
+	isTransitioning: boolean
+
 	screenWidth: number
 	setScreenWidth: (width: number) => void
 
 	shader: Shader | null
 	setShader: (shader: Shader) => void
-
-	toggleDescription: () => void
-	toggleSwitcher: () => void
 }
 
 export type DescriptionStore = {

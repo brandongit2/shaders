@@ -20,11 +20,8 @@ const SwitcherItem = ({shaderSlug, x, overwriteImage}: Props): ReactElement | nu
 	const screenWidth = useMainStore((state) => state.screenWidth)
 	const router = useRouter()
 	const pathname = usePathname()
-	const currentShader = useMainStore((state) => state.shader)
-	const toggleSwitcher = useMainStore((state) => state.toggleSwitcher)
-	const appMode = useMainStore((state) => state.appMode)
-	const delayedAppMode = useMainStore((state) => state.delayedAppMode)
-	const isTransitioning = appMode !== delayedAppMode
+	const isTransitioning = useMainStore((state) => state.isTransitioning)
+	const beginTransition = useMainStore((state) => state.beginTransition)
 
 	const itemWidth = Math.min(screenWidth / 2, 30 * 16)
 	const shader = shaderList.find((shader) => shader.slug === shaderSlug)!
@@ -76,18 +73,15 @@ const SwitcherItem = ({shaderSlug, x, overwriteImage}: Props): ReactElement | nu
 		zIndex: isTransitioning ? zIndex : shaderList.length,
 	}
 
+	console.log(overwriteImage)
 	return (
 		<>
 			<motion.div
 				className="absolute h-[min(50vw,30rem)] w-[min(50vw,30rem)] select-none"
 				style={overwriteImage ? slowStyle : fastStyle}
 				onClick={() => {
-					if (pathname === `/${shader.slug}/`) {
-						toggleSwitcher()
-					} else {
-						toggleSwitcher()
-						// router.push(`/${shader.slug}/`)
-					}
+					beginTransition(`fullscreen`)
+					// if (pathname !== `/${shader.slug}/`) router.push(`/${shader.slug}/`)
 				}}
 			>
 				{overwriteImage ?? <div className="h-full w-full overflow-hidden rounded-2xl">{shader.image}</div>}

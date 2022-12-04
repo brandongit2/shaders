@@ -1,21 +1,23 @@
 import create from "zustand"
 
-import type {MainStore} from "../components/ShaderLayout/types"
+import type {MainStore} from "../types"
+
+import {transition} from "~/components/ShaderLayout/transition"
 
 const useMainStore = create<MainStore>((set) => ({
 	appMode: `fullscreen`,
-	delayedAppMode: `fullscreen`,
-	setDelayedAppMode: (mode) => void set(() => ({delayedAppMode: mode})),
+	beginTransition: (to) => {
+		set((state) => ({prevAppMode: state.appMode, appMode: to, isTransitioning: true}))
+		setTimeout(() => void set({isTransitioning: false}), transition.duration * 1000)
+	},
+	prevAppMode: `fullscreen`,
+	isTransitioning: false,
+
 	screenWidth: 0,
-	setScreenWidth: (width) => void set(() => ({screenWidth: width})),
+	setScreenWidth: (width) => void set({screenWidth: width}),
 
 	shader: null,
-	setShader: (shader) => void set(() => ({shader})),
-
-	toggleDescription: () =>
-		void set((state) => ({appMode: state.appMode === `description` ? `fullscreen` : `description`})),
-
-	toggleSwitcher: () => void set((state) => ({appMode: state.appMode === `switcher` ? `fullscreen` : `switcher`})),
+	setShader: (shader) => void set({shader}),
 }))
 
 export default useMainStore

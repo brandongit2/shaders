@@ -16,8 +16,8 @@ type Props = {
 
 const ShaderDisplay: FC<Props> = ({children, rounded = false, hideAuthor = false}) => {
 	const appMode = useMainStore((state) => state.appMode)
-	const toggleDescription = useMainStore((state) => state.toggleDescription)
-	const toggleSwitcher = useMainStore((state) => state.toggleSwitcher)
+	const beginTransition = useMainStore((state) => state.beginTransition)
+	const isTransitioning = useMainStore((state) => state.isTransitioning)
 	const shader = useMainStore((state) => state.shader)
 
 	return (
@@ -55,19 +55,24 @@ const ShaderDisplay: FC<Props> = ({children, rounded = false, hideAuthor = false
 
 			{/* Stuff on left */}
 			{shader && (
-				<motion.div
-					layoutId="overlay-left"
-					transition={transition}
-					className={clsx(`absolute left-8 z-10`, hideAuthor ? `bottom-8` : `bottom-14 md:bottom-6`)}
-				>
+				<motion.div layoutId="overlay-left" transition={transition} className="absolute bottom-0 left-0 h-64 w-64">
 					<AnimatePresence>
-						{appMode !== `switcher` && (
-							<motion.div>
+						{(appMode === `fullscreen` || appMode === `description` || isTransitioning) && (
+							<motion.div
+								initial={isTransitioning ? {opacity: 1} : false}
+								animate={{opacity: appMode === `switcher` ? 0 : 1}}
+								transition={transition}
+								className={clsx(`absolute left-8 z-10`, hideAuthor ? `bottom-8` : `bottom-14 md:bottom-8`)}
+							>
 								<h1 className="mb-1 text-xl font-bold">
 									<span className="font-normal text-white/60">Day {shader.day} | </span>
 									{shader.name}
 								</h1>
-								<button type="button" onClick={() => void toggleDescription()} className="text-left text-sm underline">
+								<button
+									type="button"
+									onClick={() => void beginTransition(appMode === `description` ? `fullscreen` : `description`)}
+									className="text-left text-sm underline"
+								>
 									{appMode === `description` ? `Hide` : `Open`} description + breakdown
 								</button>
 							</motion.div>
@@ -78,14 +83,15 @@ const ShaderDisplay: FC<Props> = ({children, rounded = false, hideAuthor = false
 
 			{/* Stuff on right */}
 			{shader && (
-				<motion.div
-					layoutId="overlay-right"
-					transition={transition}
-					className="absolute bottom-6 max-sm:left-8 sm:right-8"
-				>
+				<motion.div layoutId="overlay-right" transition={transition} className="absolute bottom-0 right-0 h-64 w-64">
 					<AnimatePresence>
-						{appMode === `fullscreen` && (
-							<motion.div animate={{opacity: 1}} exit={{opacity: 0}} transition={transition}>
+						{(appMode === `fullscreen` || isTransitioning) && (
+							<motion.div
+								initial={isTransitioning ? {opacity: appMode === `fullscreen` ? 0 : 1} : false}
+								animate={{opacity: appMode === `fullscreen` ? 1 : 0}}
+								transition={transition}
+								className="absolute bottom-6 max-sm:left-8 sm:right-8"
+							>
 								<p className="text-sm text-white/50">
 									By{` `}
 									<Link href="https://www.brandontsang.net/" target="_blank" className="underline">
@@ -99,15 +105,20 @@ const ShaderDisplay: FC<Props> = ({children, rounded = false, hideAuthor = false
 				</motion.div>
 			)}
 
-			<motion.div layoutId="overlay-switcher-button" className="absolute bottom-12 right-8">
+			<motion.div
+				layoutId="overlay-switcher-button"
+				transition={transition}
+				className="absolute right-0 bottom-0 h-64 w-64"
+			>
 				<AnimatePresence>
-					{appMode === `fullscreen` && (
+					{(appMode === `fullscreen` || isTransitioning) && (
 						<motion.button
-							animate={{opacity: 1}}
-							exit={{opacity: 0}}
+							initial={isTransitioning ? {opacity: appMode === `fullscreen` ? 0 : 1} : false}
+							animate={{opacity: appMode === `fullscreen` ? 1 : 0}}
 							transition={transition}
 							type="button"
-							onClick={() => void toggleSwitcher()}
+							onClick={() => void beginTransition(`switcher`)}
+							className="absolute right-8 bottom-14"
 						>
 							<BsFillCollectionFill size="1.5rem" />
 						</motion.button>

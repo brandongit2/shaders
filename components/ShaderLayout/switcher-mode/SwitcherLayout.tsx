@@ -31,7 +31,7 @@ const SwitcherLayout: FC<Props> = ({children}) => {
 						key={shader.day}
 						shaderSlug={shader.slug}
 						x={x}
-						overwriteImage={currentShader?.day === shader.day ? children : undefined}
+						overwriteImage={currentShader?.day === shader.day ? children ?? <div /> : undefined}
 					/>
 				))}
 			</motion.div>

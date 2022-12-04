@@ -1,7 +1,5 @@
 "use client"
 
-import {useEffect} from "react"
-
 import type {ReactNode, FC} from "react"
 
 import useMainStore from "../../stores/useMainStore"
@@ -9,7 +7,6 @@ import DescriptionLayout from "./description-mode/DescriptionLayout"
 import FullscreenLayout from "./fullscreen-mode/FullscreenLayout"
 import ShaderDisplay from "./ShaderDisplay"
 import SwitcherLayout from "./switcher-mode/SwitcherLayout"
-import {transition} from "./transition"
 
 type Props = {
 	children: ReactNode
@@ -17,22 +14,7 @@ type Props = {
 
 const ShaderLayout: FC<Props> = ({children}) => {
 	const appMode = useMainStore((state) => state.appMode)
-	const delayedAppMode = useMainStore((state) => state.delayedAppMode)
-	const setDelayedAppMode = useMainStore((state) => state.setDelayedAppMode)
-
-	useEffect(() => {
-		if (appMode === delayedAppMode) return
-
-		if (appMode !== `fullscreen`) {
-			setDelayedAppMode(appMode)
-		} else {
-			setTimeout(() => void setDelayedAppMode(appMode), transition.duration * 1000)
-		}
-	}, [appMode, delayedAppMode, setDelayedAppMode])
-
-	useEffect(() => {
-		document.body.style.backgroundColor = appMode === `switcher` ? `#222` : `#22074a`
-	}, [appMode])
+	const prevAppMode = useMainStore((state) => state.prevAppMode)
 
 	return (
 		<div className="relative h-full">
@@ -44,7 +26,7 @@ const ShaderLayout: FC<Props> = ({children}) => {
 				</div>
 			)}
 
-			{delayedAppMode === `description` && (
+			{(appMode === `description` || prevAppMode === `description`) && (
 				<div className="absolute inset-0 isolate">
 					<DescriptionLayout>
 						{appMode === `description` && (
@@ -55,7 +37,7 @@ const ShaderLayout: FC<Props> = ({children}) => {
 					</DescriptionLayout>
 				</div>
 			)}
-			{delayedAppMode === `switcher` && (
+			{(appMode === `switcher` || prevAppMode === `switcher`) && (
 				<div className="absolute inset-0 isolate">
 					<SwitcherLayout>{appMode === `switcher` && <ShaderDisplay rounded>{children}</ShaderDisplay>}</SwitcherLayout>
 				</div>

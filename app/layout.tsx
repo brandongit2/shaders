@@ -28,6 +28,8 @@ const RootLayout = ({children}: Props): ReactElement | null => {
 		return () => void window.removeEventListener(`resize`, updateScreenWidth)
 	}, [setScreenWidth])
 
+	const appMode = useMainStore((state) => state.appMode)
+
 	return (
 		<html lang="en" className="h-full">
 			<head>
@@ -36,8 +38,8 @@ const RootLayout = ({children}: Props): ReactElement | null => {
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 			</head>
 			<body
-				className={clsx(font.className, `h-full bg-[#222] text-white transition-[background-color]`)}
-				style={{transitionDuration: `${transition.duration}s`}}
+				className={clsx(font.className, `h-full text-white transition-[background-color]`)}
+				style={{background: appMode === `switcher` ? `#222` : `#22074a`, transitionDuration: `${transition.duration}s`}}
 			>
 				<ShaderLayout>{children}</ShaderLayout>
 			</body>

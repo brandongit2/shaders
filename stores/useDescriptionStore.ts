@@ -1,7 +1,7 @@
 import produce from "immer"
 import create from "zustand"
 
-import type {DescriptionStore} from "~/components/ShaderLayout/types"
+import type {DescriptionStore} from "~/types"
 
 const useDescriptionStore = create<DescriptionStore>((set) => ({
 	sectionInfo: {},

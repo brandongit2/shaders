@@ -1,6 +1,6 @@
 import Image from "next/image"
 
-import type {Shader} from "../components/ShaderLayout/types"
+import type {Shader} from "../types"
 
 import Katex from "../components/Katex"
 import DescriptionSection from "../components/ShaderLayout/description-mode/DescriptionSection"
