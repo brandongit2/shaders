@@ -23,10 +23,7 @@ const SwitcherLayout: FC<Props> = ({children}) => {
 	return (
 		<div className="flex h-full w-full items-center overflow-hidden">
 			<motion.div
-				className="h-[min(50vw,30rem)] w-full [perspective:1500px]"
-				onDragStart={(e) => {
-					e.preventDefault()
-				}}
+				className="h-[min(50vw,30rem)] w-full touch-none [perspective:1500px]"
 				onPointerDown={(e) => void controls.start(e)}
 			>
 				{Array.from(shaderList.values()).map((shader) => (
