@@ -1,3 +1,4 @@
+import clsx from "clsx"
 import {motion, AnimatePresence} from "framer-motion"
 import Link from "next/link"
 import {BsFillCollectionFill} from "react-icons/bs"
@@ -10,9 +11,10 @@ import {transition} from "./transition"
 type Props = {
 	children: ReactNode
 	rounded?: boolean
+	hideAuthor?: boolean
 }
 
-const ShaderDisplay: FC<Props> = ({children, rounded}) => {
+const ShaderDisplay: FC<Props> = ({children, rounded = false, hideAuthor = false}) => {
 	const appMode = useMainStore((state) => state.appMode)
 	const toggleDescription = useMainStore((state) => state.toggleDescription)
 	const toggleSwitcher = useMainStore((state) => state.toggleSwitcher)
@@ -53,7 +55,11 @@ const ShaderDisplay: FC<Props> = ({children, rounded}) => {
 
 			{/* Stuff on left */}
 			{shader && (
-				<motion.div layoutId="overlay-left" transition={transition} className="absolute left-8 bottom-6 z-10">
+				<motion.div
+					layoutId="overlay-left"
+					transition={transition}
+					className={clsx(`absolute left-8 z-10`, hideAuthor ? `bottom-8` : `bottom-14 md:bottom-6`)}
+				>
 					<AnimatePresence>
 						{appMode !== `switcher` && (
 							<motion.div>
@@ -79,7 +85,7 @@ const ShaderDisplay: FC<Props> = ({children, rounded}) => {
 				>
 					<AnimatePresence>
 						{appMode === `fullscreen` && (
-							<motion.div transition={transition}>
+							<motion.div animate={{opacity: 1}} exit={{opacity: 0}} transition={transition}>
 								<p className="text-sm text-white/50">
 									By{` `}
 									<Link href="https://www.brandontsang.net/" target="_blank" className="underline">
@@ -93,15 +99,15 @@ const ShaderDisplay: FC<Props> = ({children, rounded}) => {
 				</motion.div>
 			)}
 
-			<motion.div layoutId="overlay-switcher-button">
+			<motion.div layoutId="overlay-switcher-button" className="absolute bottom-12 right-8">
 				<AnimatePresence>
 					{appMode === `fullscreen` && (
 						<motion.button
-							layout
+							animate={{opacity: 1}}
+							exit={{opacity: 0}}
 							transition={transition}
 							type="button"
 							onClick={() => void toggleSwitcher()}
-							className="absolute right-8 bottom-8"
 						>
 							<BsFillCollectionFill size="1.5rem" />
 						</motion.button>

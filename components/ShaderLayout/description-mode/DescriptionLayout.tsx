@@ -13,7 +13,7 @@ const DescriptionLayout: FC<Props> = ({children}) => {
 
 	return (
 		<div className="mx-auto grid h-full max-w-4xl gap-6 p-2 max-md:grid-rows-[min(100vw,50vh)_auto] md:grid-cols-2 md:p-6">
-			<div className="h-full md:order-2 md:my-auto md:max-h-[30rem]">{children}</div>
+			<div className="relative z-10 h-full md:order-2 md:my-auto md:max-h-[30rem]">{children}</div>
 
 			<div className="grid h-full grid-cols-[2rem_1fr] overflow-hidden">
 				<div className="grid place-items-center">

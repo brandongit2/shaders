@@ -47,7 +47,11 @@ const ShaderLayout: FC<Props> = ({children}) => {
 			{delayedAppMode === `description` && (
 				<div className="absolute inset-0 isolate">
 					<DescriptionLayout>
-						{appMode === `description` && <ShaderDisplay rounded>{children}</ShaderDisplay>}
+						{appMode === `description` && (
+							<ShaderDisplay rounded hideAuthor>
+								{children}
+							</ShaderDisplay>
+						)}
 					</DescriptionLayout>
 				</div>
 			)}
