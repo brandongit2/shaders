@@ -4,10 +4,9 @@ import {useEffect} from "react"
 
 import type {FC} from "react"
 
-import {fragmentShader} from "./shader"
 import Canvas from "~/components/Canvas"
-import shaderList from "~/components/ShaderPage/shaderList"
-import useStore from "~/components/ShaderPage/store"
+import shaderList from "~/shaders/shaderList"
+import useMainStore from "~/stores/useMainStore"
 
 export const generateStaticParams = async () => shaderList.map((shader) => shader.slug)
 
@@ -16,11 +15,11 @@ type Props = {
 }
 
 const ShaderPage: FC<Props> = ({params}) => {
-	const setShader = useStore((state) => state.setShader)
+	const setShader = useMainStore((state) => state.setShader)
 	const shader = shaderList.find((shader) => shader.slug === params.shader)!
 	useEffect(() => void setShader(shader), [setShader, shader])
 
-	return <Canvas fragmentShader={fragmentShader} />
+	return <Canvas fragmentShader={shader.fragmentShader} />
 }
 
 export default ShaderPage

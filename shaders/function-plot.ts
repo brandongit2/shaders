@@ -1,6 +1,6 @@
 import glsl from "helpers/glsl"
 
-export const fragmentShader = glsl`#version 300 es
+export const functionPlot = glsl`#version 300 es
 	precision highp float;
 
 	in vec2 f_uv;

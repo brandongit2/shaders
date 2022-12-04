@@ -2,11 +2,14 @@
 
 import {Familjen_Grotesk} from "@next/font/google"
 import clsx from "clsx"
+import {useEffect} from "react"
 
 import type {ReactElement, ReactNode} from "react"
 
 import "./styles.css"
-import ShaderPage from "~/components/ShaderPage"
+import ShaderLayout from "~/components/ShaderLayout"
+import {transition} from "~/components/ShaderLayout/transition"
+import useMainStore from "~/stores/useMainStore"
 import "~/utils/logger-dev-only"
 
 const font = Familjen_Grotesk()
@@ -16,6 +19,15 @@ type Props = {
 }
 
 const RootLayout = ({children}: Props): ReactElement | null => {
+	const setScreenWidth = useMainStore((state) => state.setScreenWidth)
+	useEffect(() => {
+		const updateScreenWidth = () => void setScreenWidth(window.innerWidth)
+		updateScreenWidth()
+
+		window.addEventListener(`resize`, updateScreenWidth)
+		return () => void window.removeEventListener(`resize`, updateScreenWidth)
+	}, [setScreenWidth])
+
 	return (
 		<html lang="en" className="h-full">
 			<head>
@@ -23,8 +35,11 @@ const RootLayout = ({children}: Props): ReactElement | null => {
 
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 			</head>
-			<body className={clsx(font.className, `h-full bg-[#222] text-white transition-[background-color] duration-1000`)}>
-				<ShaderPage>{children}</ShaderPage>
+			<body
+				className={clsx(font.className, `h-full bg-[#222] text-white transition-[background-color]`)}
+				style={{transitionDuration: `${transition.duration}s`}}
+			>
+				<ShaderLayout>{children}</ShaderLayout>
 			</body>
 		</html>
 	)

@@ -1,16 +1,21 @@
 import Image from "next/image"
 
-import type {Shader} from "./types"
+import type {Shader} from "../components/ShaderLayout/types"
 
-// import day2Img from "./switcher-mode/img.jpg"
-import Katex from "../Katex"
-import day1Img from "./day1.png"
-import DescriptionSection from "./description-mode/DescriptionSection"
+import Katex from "../components/Katex"
+import DescriptionSection from "../components/ShaderLayout/description-mode/DescriptionSection"
+import {colorful} from "./colorful"
+import {functionPlot} from "./function-plot"
+import day1Img from "./function-plot.png"
+import day2Img from "./img.jpg"
 
 Image
 DescriptionSection
 Katex
 day1Img
+day2Img
+functionPlot
+colorful
 
 const shaderList = [
 	{
@@ -19,6 +24,7 @@ const shaderList = [
 		image: <Image src={day1Img} alt="" draggable={false} />,
 		day: 1,
 		date: `10 Nov 2022`,
+		fragmentShader: functionPlot,
 		description: (
 			<>
 				<DescriptionSection name="intro">
@@ -76,6 +82,33 @@ const shaderList = [
 				</DescriptionSection>
 			</>
 		),
+	},
+	{
+		name: `Colorful`,
+		day: 2,
+		date: `3 Dec 2022`,
+		description: null,
+		fragmentShader: colorful,
+		image: <Image src={day2Img} alt="" draggable={false} />,
+		slug: `colorful-1`,
+	},
+	{
+		name: `Colorful`,
+		day: 3,
+		date: `3 Dec 2022`,
+		description: null,
+		fragmentShader: colorful,
+		image: <Image src={day2Img} alt="" draggable={false} />,
+		slug: `colorful-2`,
+	},
+	{
+		name: `Colorful`,
+		day: 4,
+		date: `3 Dec 2022`,
+		description: null,
+		fragmentShader: colorful,
+		image: <Image src={day2Img} alt="" draggable={false} />,
+		slug: `colorful-3`,
 	},
 ] satisfies Shader[]
 

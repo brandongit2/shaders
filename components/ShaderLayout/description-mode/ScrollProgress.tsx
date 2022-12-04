@@ -1,17 +1,13 @@
 "use client"
 
 import clsx from "clsx"
-import shallow from "zustand/shallow"
 
 import type {ReactElement} from "react"
 
-import useStore from "../store"
+import useDescriptionStore from "~/stores/useDescriptionStore"
 
 const ScrollProgress = (): ReactElement | null => {
-	const {sectionInfo} = useStore(
-		(state) => ({sectionInfo: state.sectionInfo, scrollProgress: state.scrollProgress}),
-		shallow,
-	)
+	const sectionInfo = useDescriptionStore((state) => state.sectionInfo)
 
 	return (
 		<div className="relative h-full max-h-72 w-0">

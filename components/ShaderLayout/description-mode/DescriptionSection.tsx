@@ -7,7 +7,7 @@ import {mergeRefs} from "react-merge-refs"
 
 import type {ReactElement, ReactNode} from "react"
 
-import useStore from "../store"
+import useDescriptionStore from "~/stores/useDescriptionStore"
 
 type Props = {
 	children: ReactNode
@@ -16,7 +16,7 @@ type Props = {
 }
 
 const DescriptionSection = ({children, name, last}: Props): ReactElement | null => {
-	const setSectionInfo = useStore((state) => state.setSectionInfo)
+	const setSectionInfo = useDescriptionStore((state) => state.setSectionInfo)
 
 	const {ref: interesectionRef, inView} = useInView({
 		root: typeof window !== `undefined` ? document.querySelector(`[data-scroller]`) : null,

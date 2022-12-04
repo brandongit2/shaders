@@ -5,11 +5,10 @@ import * as ScrollArea from "@radix-ui/react-scroll-area"
 import clsx from "clsx"
 import Link from "next/link"
 import {useCallback, useEffect} from "react"
-import shallow from "zustand/shallow"
 
 import type {ReactElement, ReactNode} from "react"
 
-import useStore from "../store"
+import useDescriptionStore from "~/stores/useDescriptionStore"
 
 // eslint-disable-next-line @typescript-eslint/quotes
 const joan = Joan({weight: "400"})
@@ -19,20 +18,10 @@ type Props = {
 }
 
 const Description = ({children}: Props): ReactElement | null => {
-	const {
-		descriptionPadding: [descriptionPaddingTop, descriptionPaddingBottom],
-		setDescriptionPaddingTop,
-		setDescriptionPaddingBottom,
-		setScrollProgress,
-	} = useStore(
-		(state) => ({
-			descriptionPadding: state.descriptionPadding,
-			setDescriptionPaddingTop: state.setDescriptionPaddingTop,
-			setDescriptionPaddingBottom: state.setDescriptionPaddingBottom,
-			setScrollProgress: state.setScrollProgress,
-		}),
-		shallow,
-	)
+	const [descriptionPaddingTop, descriptionPaddingBottom] = useDescriptionStore((state) => state.descriptionPadding)
+	const setDescriptionPaddingTop = useDescriptionStore((state) => state.setDescriptionPaddingTop)
+	const setDescriptionPaddingBottom = useDescriptionStore((state) => state.setDescriptionPaddingBottom)
+	const setScrollProgress = useDescriptionStore((state) => state.setScrollProgress)
 
 	const updateDescriptionPadding = useCallback(() => {
 		const scroller = document.querySelector(`[data-scroller]`) as HTMLElement

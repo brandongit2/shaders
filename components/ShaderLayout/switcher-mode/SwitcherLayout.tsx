@@ -1,32 +1,38 @@
-"use client"
-
 import {motion, useDragControls, useMotionValue} from "framer-motion"
 
-import type {FC} from "react"
+import type {FC, ReactNode} from "react"
 
-import shaderList from "../shaderList"
 import SwitcherItem from "./SwitcherItem"
-import {useScreenWidth} from "~/utils/useScreenWidth"
+import shaderList from "~/shaders/shaderList"
+import useMainStore from "~/stores/useMainStore"
 
-const Switcher: FC = () => {
+type Props = {
+	children: ReactNode
+}
+
+const SwitcherLayout: FC<Props> = ({children}) => {
 	const x = useMotionValue(0)
 	const controls = useDragControls()
+	const currentShader = useMainStore((state) => state.shader)
 
-	const screenWidth = useScreenWidth()!
+	const screenWidth = useMainStore((state) => state.screenWidth)
 	const itemWidth = Math.min(screenWidth / 2, 30 * 16)
-
-	const offset = useMotionValue(0)
 
 	const itemSeparation = itemWidth * 0.4
 
 	return (
-		<>
+		<div className="flex h-full w-full items-center">
 			<motion.div
-				className="fixed top-1/2 left-0 h-[min(50vw,30rem)] w-full -translate-y-1/2 [perspective:1500px]"
+				className="h-[min(50vw,30rem)] w-full [perspective:1500px]"
 				onPointerDown={(e) => void controls.start(e)}
 			>
 				{Array.from(shaderList.values()).map((shader) => (
-					<SwitcherItem key={shader.day} shaderSlug={shader.slug} x={x} offset={offset} />
+					<SwitcherItem
+						key={shader.day}
+						shaderSlug={shader.slug}
+						x={x}
+						overwriteImage={currentShader?.day === shader.day ? children : undefined}
+					/>
 				))}
 			</motion.div>
 			<motion.div
@@ -41,8 +47,8 @@ const Switcher: FC = () => {
 				}}
 				onUpdate={(latest) => void x.set(Number(latest.x))}
 			/>
-		</>
+		</div>
 	)
 }
 
-export default Switcher
+export default SwitcherLayout

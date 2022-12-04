@@ -4,25 +4,24 @@ import {motion, useMotionTemplate, useTransform} from "framer-motion"
 import {usePathname, useRouter} from "next/navigation"
 
 import type {MotionValue} from "framer-motion"
-import type {ReactElement} from "react"
+import type {ReactElement, ReactNode} from "react"
 
-import shaderList from "../shaderList"
-import useStore from "../store"
+import shaderList from "../../../shaders/shaderList"
+import useMainStore from "../../../stores/useMainStore"
 import {smoothStep} from "~/helpers/math"
-import {useScreenWidth} from "~/utils/useScreenWidth"
 
 type Props = {
+	overwriteImage?: ReactNode
 	shaderSlug: string
 	x: MotionValue<number>
-	offset: MotionValue<number>
 }
 
-const SwitcherItem = ({shaderSlug, x, offset}: Props): ReactElement | null => {
-	const screenWidth = useScreenWidth()!
+const SwitcherItem = ({shaderSlug, x, overwriteImage}: Props): ReactElement | null => {
+	const screenWidth = useMainStore((state) => state.screenWidth)
 	const router = useRouter()
 	const pathname = usePathname()
-	const currentShader = useStore((state) => state.shader)
-	const toggleSwitcher = useStore((state) => state.toggleSwitcher)
+	const currentShader = useMainStore((state) => state.shader)
+	const toggleSwitcher = useMainStore((state) => state.toggleSwitcher)
 
 	const itemWidth = Math.min(screenWidth / 2, 30 * 16)
 	const shader = shaderList.find((shader) => shader.slug === shaderSlug)!
@@ -32,7 +31,7 @@ const SwitcherItem = ({shaderSlug, x, offset}: Props): ReactElement | null => {
 
 	const itemSeparation = itemWidth * 0.4
 	const u = useTransform(x, (val) => {
-		return val + (shaderIndex - offset.get()) * itemSeparation
+		return val + shaderIndex * itemSeparation
 	})
 
 	const middleSpace = itemWidth * 0.3
@@ -62,30 +61,39 @@ const SwitcherItem = ({shaderSlug, x, offset}: Props): ReactElement | null => {
 		}
 	})
 
+	const fastStyle = {
+		transform: useMotionTemplate`translateX(${translateX}px) translateZ(${translateZ}px) translateX(-50%) rotateY(${rotation}deg)`,
+		left: `50%`,
+		zIndex: useTransform(u, (val) => -Math.abs(val) + shaderList.length),
+	}
+	const slowStyle = {
+		transform: useMotionTemplate`translateZ(${translateZ}px) rotateY(${rotation}deg)`,
+		left: useMotionTemplate`calc(50% + ${translateX}px - min(50vw, 30rem) / 2)`,
+		zIndex: useTransform(u, (val) => -Math.abs(val) + shaderList.length),
+	}
+
 	return (
 		<>
 			<motion.div
-				className="absolute left-1/2 h-[min(50vw,30rem)] w-[min(50vw,30rem)] overflow-hidden rounded-[16px]"
-				style={{
-					transform: useMotionTemplate`translateX(${translateX}px) translateZ(${translateZ}px) translateX(-50%) rotateY(${rotation}deg)`,
-					zIndex: useTransform(u, (val) => -Math.abs(val)),
-				}}
+				className="absolute h-[min(50vw,30rem)] w-[min(50vw,30rem)] select-none"
+				style={overwriteImage ? slowStyle : fastStyle}
 				onClick={() => {
-					if (pathname === `/${currentShader?.slug}/`) {
+					if (pathname === `/${shader.slug}/`) {
 						toggleSwitcher()
 					} else {
-						router.push(shader.slug)
+						toggleSwitcher()
+						// router.push(`/${shader.slug}/`)
 					}
 				}}
 			>
-				{shader.image}
+				{overwriteImage ?? <div className="h-full w-full overflow-hidden rounded-2xl">{shader.image}</div>}
 			</motion.div>
 			<motion.div
 				style={{
 					transform: useMotionTemplate`translateX(${translateX}px) translateZ(${translateZ}px) translate(-50%, 100%) scaleY(-1) rotateY(${rotation}deg)`,
 					zIndex: useTransform(u, (val) => -Math.abs(val)),
 				}}
-				className="pointer-events-none absolute left-1/2 h-[min(50vw,30rem)] w-[min(50vw,30rem)] overflow-hidden rounded-[16px] bg-[#222] saturate-[80%] [&>*]:opacity-20"
+				className="pointer-events-none absolute left-1/2 h-[min(50vw,30rem)] w-[min(50vw,30rem)] select-none overflow-hidden rounded-[16px] bg-[#222] saturate-[80%] [&>*]:opacity-20"
 			>
 				{shader.image}
 			</motion.div>
