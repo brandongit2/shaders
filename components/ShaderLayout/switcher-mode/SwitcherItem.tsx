@@ -22,6 +22,9 @@ const SwitcherItem = ({shaderSlug, x, overwriteImage}: Props): ReactElement | nu
 	const pathname = usePathname()
 	const currentShader = useMainStore((state) => state.shader)
 	const toggleSwitcher = useMainStore((state) => state.toggleSwitcher)
+	const appMode = useMainStore((state) => state.appMode)
+	const delayedAppMode = useMainStore((state) => state.delayedAppMode)
+	const isTransitioning = appMode !== delayedAppMode
 
 	const itemWidth = Math.min(screenWidth / 2, 30 * 16)
 	const shader = shaderList.find((shader) => shader.slug === shaderSlug)!
@@ -61,15 +64,16 @@ const SwitcherItem = ({shaderSlug, x, overwriteImage}: Props): ReactElement | nu
 		}
 	})
 
+	const zIndex = useTransform(u, (val) => -Math.abs(val) + shaderList.length)
 	const fastStyle = {
 		transform: useMotionTemplate`translateX(${translateX}px) translateZ(${translateZ}px) translateX(-50%) rotateY(${rotation}deg)`,
 		left: `50%`,
-		zIndex: useTransform(u, (val) => -Math.abs(val) + shaderList.length),
+		zIndex,
 	}
 	const slowStyle = {
 		transform: useMotionTemplate`translateZ(${translateZ}px) rotateY(${rotation}deg)`,
 		left: useMotionTemplate`calc(50% + ${translateX}px - min(50vw, 30rem) / 2)`,
-		zIndex: useTransform(u, (val) => -Math.abs(val) + shaderList.length),
+		zIndex: isTransitioning ? zIndex : shaderList.length,
 	}
 
 	return (
