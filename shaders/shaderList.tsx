@@ -21,7 +21,7 @@ const shaderList = [
 	{
 		name: `Function Plot`,
 		slug: `function-plot`,
-		image: <Image src={day1Img} alt="" draggable={false} />,
+		image: <Image key="day-1-image" src={day1Img} alt="" draggable={false} />,
 		day: 1,
 		date: `10 Nov 2022`,
 		fragmentShader: functionPlot,
@@ -89,7 +89,7 @@ const shaderList = [
 		date: `3 Dec 2022`,
 		description: null,
 		fragmentShader: colorful,
-		image: <Image src={day2Img} alt="" draggable={false} />,
+		image: <Image key="day-2-image" src={day2Img} alt="" draggable={false} />,
 		slug: `colorful-1`,
 	},
 	{
@@ -98,7 +98,7 @@ const shaderList = [
 		date: `3 Dec 2022`,
 		description: null,
 		fragmentShader: colorful,
-		image: <Image src={day2Img} alt="" draggable={false} />,
+		image: <Image key="day-3-image" src={day2Img} alt="" draggable={false} />,
 		slug: `colorful-2`,
 	},
 	{
@@ -107,7 +107,7 @@ const shaderList = [
 		date: `3 Dec 2022`,
 		description: null,
 		fragmentShader: colorful,
-		image: <Image src={day2Img} alt="" draggable={false} />,
+		image: <Image key="day-4-image" src={day2Img} alt="" draggable={false} />,
 		slug: `colorful-3`,
 	},
 ] satisfies Shader[]

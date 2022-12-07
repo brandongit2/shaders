@@ -58,6 +58,7 @@ const SwitcherLayout: FC<Props> = ({children}) => {
 					modifyTarget: (target) => Math.round(target / itemSeparation) * itemSeparation,
 				}}
 				onDragStart={() => void (hasDragged.current = true)}
+				onDragEnd={() => void setTimeout(() => void (hasDragged.current = false), 10)}
 				onUpdate={(latest) => void x.set(Number(latest.x))}
 			/>
 		</div>

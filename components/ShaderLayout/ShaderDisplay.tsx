@@ -1,5 +1,5 @@
 import clsx from "clsx"
-import {motion, AnimatePresence} from "framer-motion"
+import {motion} from "framer-motion"
 import Link from "next/link"
 import {BsFillCollectionFill} from "react-icons/bs"
 
@@ -17,7 +17,6 @@ type Props = {
 const ShaderDisplay: FC<Props> = ({children, rounded = false, hideAuthor = false}) => {
 	const appMode = useMainStore((state) => state.appMode)
 	const beginTransition = useMainStore((state) => state.beginTransition)
-	const isTransitioning = useMainStore((state) => state.isTransitioning)
 	const shader = useMainStore((state) => state.shader)
 
 	if (!shader) return <>{children}</>
@@ -31,16 +30,14 @@ const ShaderDisplay: FC<Props> = ({children, rounded = false, hideAuthor = false
 			<div className="absolute inset-0">{children}</div>
 
 			{/* Background gradient */}
-			<AnimatePresence>
-				{(appMode === `fullscreen` || appMode === `description` || isTransitioning) && (
-					<motion.div
-						layoutId={`overlay-gradient-${shader.slug}`}
-						initial={isTransitioning ? {opacity: 1} : false}
-						animate={{opacity: appMode === `switcher` ? 0 : 1}}
-						transition={transition}
-						className="absolute bottom-0 left-0 right-0 h-36"
-						style={{
-							backgroundImage: `
+			<motion.div
+				layoutId={`overlay-gradient-${shader.slug}`}
+				initial={false}
+				animate={{opacity: appMode === `switcher` ? 0 : 1}}
+				transition={transition}
+				className="absolute bottom-0 left-0 right-0 h-36"
+				style={{
+					backgroundImage: `
 							linear-gradient(
 								0deg,
 								rgb(0% 0% 0% / 0.78) 0%,
@@ -54,14 +51,13 @@ const ShaderDisplay: FC<Props> = ({children, rounded = false, hideAuthor = false
 								rgb(0% 0% 0% / 0) 100%
 							)
 						`,
-						}}
-					/>
-				)}
-			</AnimatePresence>
+				}}
+			/>
 
 			{/* Stuff on left */}
 			<motion.div
 				layoutId={`overlay-left-${shader.slug}`}
+				initial={false}
 				animate={{opacity: appMode === `switcher` ? 0 : 1}}
 				transition={transition}
 				className={clsx(`absolute left-8 z-10 h-max w-max`, hideAuthor ? `bottom-8` : `bottom-16 md:bottom-8`)}
@@ -82,6 +78,7 @@ const ShaderDisplay: FC<Props> = ({children, rounded = false, hideAuthor = false
 			{/* Stuff on right */}
 			<motion.div
 				layoutId={`overlay-right-${shader.slug}`}
+				initial={false}
 				animate={{opacity: appMode === `fullscreen` ? 1 : 0}}
 				transition={transition}
 				className="absolute bottom-8 h-12 w-72 max-sm:left-8 sm:right-8"
@@ -97,18 +94,18 @@ const ShaderDisplay: FC<Props> = ({children, rounded = false, hideAuthor = false
 				</div>
 			</motion.div>
 
-			<motion.button
+			<motion.div
 				layoutId={`overlay-switcher-button-${shader.slug}`}
+				initial={false}
 				animate={{opacity: appMode === `fullscreen` ? 1 : 0}}
 				transition={transition}
-				type="button"
 				onClick={() => void beginTransition(`switcher`)}
 				className="absolute right-8 bottom-8 h-16 w-16 sm:bottom-16"
 			>
-				<div className="absolute bottom-0 right-0 h-max w-max">
+				<button type="button" className="absolute bottom-0 right-0 h-max w-max">
 					<BsFillCollectionFill size="1.5rem" />
-				</div>
-			</motion.button>
+				</button>
+			</motion.div>
 		</motion.div>
 	)
 }
