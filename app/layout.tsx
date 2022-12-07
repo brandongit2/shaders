@@ -4,7 +4,7 @@ import {Familjen_Grotesk} from "@next/font/google"
 import clsx from "clsx"
 import {useEffect} from "react"
 
-import type {ReactElement, ReactNode} from "react"
+import type {ReactNode, FC} from "react"
 
 import "./styles.css"
 import ShaderLayout from "~/components/ShaderLayout"
@@ -18,7 +18,7 @@ type Props = {
 	children: ReactNode
 }
 
-const RootLayout = ({children}: Props): ReactElement | null => {
+const RootLayout: FC<Props> = ({children}) => {
 	const setScreenWidth = useMainStore((state) => state.setScreenWidth)
 	useEffect(() => {
 		const updateScreenWidth = () => void setScreenWidth(window.innerWidth)
@@ -31,14 +31,14 @@ const RootLayout = ({children}: Props): ReactElement | null => {
 	const appMode = useMainStore((state) => state.appMode)
 
 	return (
-		<html lang="en" className="h-full">
+		<html lang="en" className={clsx(font.className, `h-full`)}>
 			<head>
 				<title>Shaders!!</title>
 
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 			</head>
 			<body
-				className={clsx(font.className, `h-full text-white transition-[background-color]`)}
+				className="h-full text-white transition-[background-color]"
 				style={{background: appMode === `switcher` ? `#222` : `#22074a`, transitionDuration: `${transition.duration}s`}}
 			>
 				<ShaderLayout>{children}</ShaderLayout>

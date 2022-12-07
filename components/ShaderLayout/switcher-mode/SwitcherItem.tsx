@@ -1,7 +1,6 @@
 "use client"
 
 import {motion, useMotionTemplate, useTransform} from "framer-motion"
-import {usePathname, useRouter} from "next/navigation"
 
 import type {MotionValue} from "framer-motion"
 import type {ReactElement, ReactNode} from "react"
@@ -14,14 +13,12 @@ type Props = {
 	overwriteImage?: ReactNode
 	shaderSlug: string
 	x: MotionValue<number>
+	onClick: () => void
 }
 
-const SwitcherItem = ({shaderSlug, x, overwriteImage}: Props): ReactElement | null => {
+const SwitcherItem = ({shaderSlug, x, overwriteImage, onClick}: Props): ReactElement | null => {
 	const screenWidth = useMainStore((state) => state.screenWidth)
-	const router = useRouter()
-	const pathname = usePathname()
 	const isTransitioning = useMainStore((state) => state.isTransitioning)
-	const beginTransition = useMainStore((state) => state.beginTransition)
 
 	const itemWidth = Math.min(screenWidth / 2, 30 * 16)
 	const shader = shaderList.find((shader) => shader.slug === shaderSlug)!
@@ -30,9 +27,8 @@ const SwitcherItem = ({shaderSlug, x, overwriteImage}: Props): ReactElement | nu
 	const spinAt = itemWidth * 0.35
 
 	const itemSeparation = itemWidth * 0.4
-	const u = useTransform(x, (val) => {
-		return val + shaderIndex * itemSeparation
-	})
+	// In pixels. 0 is center of screen, lower is left, greater is right
+	const u = useTransform(x, (val) => val + shaderIndex * itemSeparation)
 
 	const middleSpace = itemWidth * 0.3
 	const translateX = useTransform(u, (val) => {
@@ -61,7 +57,13 @@ const SwitcherItem = ({shaderSlug, x, overwriteImage}: Props): ReactElement | nu
 		}
 	})
 
-	const zIndex = useTransform(u, (val) => -Math.abs(val) + shaderList.length)
+	// There are two groups of z-indexes:
+	// - One from 0 to window.clientWidth / 2 for the reflections
+	// - One from 1000 to 1000 + window.clientWidth / 2 for the main items (lower bound was arbitrary)
+	const zIndex = useTransform(u, (val) => -Math.abs(val) + 1000)
+
+	// fastStyle relies purely on transforms for translating items, slowStyle relies on `left` for translating items.
+	// slowStyle is used for the item being transitioned, so that Framer Motion can correctly measure the item's position.
 	const fastStyle = {
 		transform: useMotionTemplate`translateX(${translateX}px) translateZ(${translateZ}px) translateX(-50%) rotateY(${rotation}deg)`,
 		left: `50%`,
@@ -70,7 +72,7 @@ const SwitcherItem = ({shaderSlug, x, overwriteImage}: Props): ReactElement | nu
 	const slowStyle = {
 		transform: useMotionTemplate`translateZ(${translateZ}px) rotateY(${rotation}deg)`,
 		left: useMotionTemplate`calc(50% + ${translateX}px - min(50vw, 30rem) / 2)`,
-		zIndex: isTransitioning ? zIndex : shaderList.length,
+		zIndex: isTransitioning ? 10000 : zIndex,
 	}
 
 	return (
@@ -78,10 +80,7 @@ const SwitcherItem = ({shaderSlug, x, overwriteImage}: Props): ReactElement | nu
 			<motion.div
 				className="absolute h-[min(50vw,30rem)] w-[min(50vw,30rem)] select-none"
 				style={overwriteImage ? slowStyle : fastStyle}
-				onClick={() => {
-					beginTransition(`fullscreen`)
-					// if (pathname !== `/${shader.slug}/`) router.push(`/${shader.slug}/`)
-				}}
+				onClick={() => void onClick()}
 			>
 				{overwriteImage ?? <div className="h-full w-full overflow-hidden rounded-2xl">{shader.image}</div>}
 			</motion.div>
