@@ -73,7 +73,6 @@ const SwitcherItem = ({shaderSlug, x, overwriteImage}: Props): ReactElement | nu
 		zIndex: isTransitioning ? zIndex : shaderList.length,
 	}
 
-	console.log(overwriteImage)
 	return (
 		<>
 			<motion.div

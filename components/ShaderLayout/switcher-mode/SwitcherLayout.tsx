@@ -26,12 +26,12 @@ const SwitcherLayout: FC<Props> = ({children}) => {
 				className="h-[min(50vw,30rem)] w-full touch-none [perspective:1500px]"
 				onPointerDown={(e) => void controls.start(e)}
 			>
-				{Array.from(shaderList.values()).map((shader) => (
+				{shaderList.map((shader) => (
 					<SwitcherItem
 						key={shader.day}
 						shaderSlug={shader.slug}
 						x={x}
-						overwriteImage={currentShader?.day === shader.day ? children ?? <div /> : undefined}
+						overwriteImage={currentShader?.day === shader.day ? children || 4 : undefined}
 					/>
 				))}
 			</motion.div>
