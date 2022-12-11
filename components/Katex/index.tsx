@@ -1,14 +1,14 @@
 import katex from "katex"
 import "katex/dist/katex.css"
 
-import type {ReactElement} from "react"
+import type {FC} from "react"
 
 type Props = {
 	children: string
 	displayMode?: boolean
 }
 
-const Katex = ({children, displayMode = false}: Props): ReactElement | null => {
+const Katex: FC<Props> = ({children, displayMode = false}) => {
 	const renderedString = katex.renderToString(children, {
 		output: `html`,
 		displayMode,

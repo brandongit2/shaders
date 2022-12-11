@@ -1,10 +1,11 @@
 "use client"
 
 import {motion, useMotionTemplate, useTransform} from "framer-motion"
-import {useRef} from "react"
+import {useState} from "react"
+import invariant from "ts-invariant"
 
 import type {MotionValue} from "framer-motion"
-import type {ReactElement, ReactNode} from "react"
+import type {ReactNode, FC} from "react"
 
 import {smoothStep} from "~/helpers/math"
 import shaderList from "~/shaders/shaderList"
@@ -12,25 +13,24 @@ import useMainStore from "~/stores/useMainStore"
 
 type Props = {
 	overwriteImage?: ReactNode
-	shaderSlug: string
+	shaderIndex: number
 	x: MotionValue<number>
 	onClick: () => void
 }
 
-const SwitcherItem = ({shaderSlug, x, overwriteImage, onClick}: Props): ReactElement | null => {
-	const screenWidth = useMainStore((state) => state.screenWidth)
+const SwitcherItem: FC<Props> = ({shaderIndex, x, overwriteImage, onClick}) => {
+	const currentShaderIndex = useMainStore((state) => state.currentShaderIndex)
+	invariant(currentShaderIndex !== null, `currentShaderIndex is null`)
+	const [initialShaderIndex] = useState(currentShaderIndex)
 
+	const screenWidth = useMainStore((state) => state.screenWidth)
 	const itemWidth = Math.min(screenWidth / 2, 30 * 16)
-	const shader = shaderList.find((shader) => shader.slug === shaderSlug)!
-	const shaderIndex = shaderList.findIndex((shader) => shader.slug === shaderSlug)
-	const currentShader = useMainStore((state) => state.shader)
-	const initialShaderIndex = useRef(shaderList.findIndex((shader) => shader.slug === currentShader?.slug))
 
 	const spinAt = itemWidth * 0.35
 	const itemSeparation = itemWidth * 0.4
 
 	// In pixels. 0 is center of screen, lower is left, greater is right
-	const u = useTransform(x, (val) => val + (shaderIndex - initialShaderIndex.current) * itemSeparation)
+	const u = useTransform(x, (val) => val + (shaderIndex - initialShaderIndex) * itemSeparation)
 
 	const middleSpace = itemWidth * 0.3
 	const translateX = useTransform(u, (val) => {
@@ -79,7 +79,9 @@ const SwitcherItem = ({shaderSlug, x, overwriteImage, onClick}: Props): ReactEle
 				}}
 				onClick={() => void onClick()}
 			>
-				{overwriteImage ?? <div className="h-full w-full overflow-hidden rounded-2xl">{shader.image}</div>}
+				{overwriteImage ?? (
+					<div className="h-full w-full overflow-hidden rounded-2xl">{shaderList[shaderIndex]!.image}</div>
+				)}
 			</motion.div>
 			<motion.div
 				style={{
@@ -88,7 +90,7 @@ const SwitcherItem = ({shaderSlug, x, overwriteImage, onClick}: Props): ReactEle
 				}}
 				className="pointer-events-none absolute left-1/2 h-[min(50vw,30rem)] w-[min(50vw,30rem)] select-none overflow-hidden rounded-[16px] bg-[#222] saturate-[80%] [&>*]:opacity-20"
 			>
-				{shader.image}
+				{shaderList[shaderIndex]!.image}
 			</motion.div>
 		</>
 	)

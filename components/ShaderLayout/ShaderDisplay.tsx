@@ -1,12 +1,16 @@
+"use client"
+
 import clsx from "clsx"
 import {motion} from "framer-motion"
 import Link from "next/link"
 import {BsFillCollectionFill} from "react-icons/bs"
+import invariant from "ts-invariant"
 
 import type {FC, ReactNode} from "react"
 
 import useMainStore from "../../stores/useMainStore"
 import {transition} from "./transition"
+import shaderList from "~/shaders/shaderList"
 
 type Props = {
 	children: ReactNode
@@ -17,12 +21,13 @@ type Props = {
 const ShaderDisplay: FC<Props> = ({children, rounded = false, hideAuthor = false}) => {
 	const appMode = useMainStore((state) => state.appMode)
 	const beginTransition = useMainStore((state) => state.beginTransition)
-	const shader = useMainStore((state) => state.shader)
+	const currentShaderIndex = useMainStore((state) => state.currentShaderIndex)
+	invariant(currentShaderIndex !== null, `ShaderDisplay: currentShaderIndex is null`)
 
-	if (!shader) return <>{children}</>
+	const currentShader = shaderList[currentShaderIndex]!
 	return (
 		<motion.div
-			layoutId={`shader-display-${shader.slug}`}
+			layoutId={`shader-display-${currentShaderIndex}`}
 			transition={transition}
 			className="relative isolate h-full w-full overflow-hidden"
 			style={{borderRadius: rounded ? `16px` : `0px`}}
@@ -31,7 +36,7 @@ const ShaderDisplay: FC<Props> = ({children, rounded = false, hideAuthor = false
 
 			{/* Background gradient */}
 			<motion.div
-				layoutId={`overlay-gradient-${shader.slug}`}
+				layoutId={`overlay-gradient-${currentShaderIndex}`}
 				initial={false}
 				animate={{opacity: appMode === `switcher` ? 0 : 1}}
 				transition={transition}
@@ -56,15 +61,15 @@ const ShaderDisplay: FC<Props> = ({children, rounded = false, hideAuthor = false
 
 			{/* Stuff on left */}
 			<motion.div
-				layoutId={`overlay-left-${shader.slug}`}
+				layoutId={`overlay-left-${currentShaderIndex}`}
 				initial={false}
 				animate={{opacity: appMode === `switcher` ? 0 : 1}}
 				transition={transition}
 				className={clsx(`absolute left-8 z-10 h-max w-max`, hideAuthor ? `bottom-8` : `bottom-16 md:bottom-8`)}
 			>
 				<h1 className="mb-1 text-xl font-bold">
-					<span className="font-normal text-white/60">Day {shader.day} | </span>
-					{shader.name}
+					<span className="font-normal text-white/60">Day {currentShader.day} | </span>
+					{currentShader.name}
 				</h1>
 				<button
 					type="button"
@@ -77,7 +82,7 @@ const ShaderDisplay: FC<Props> = ({children, rounded = false, hideAuthor = false
 
 			{/* Stuff on right */}
 			<motion.div
-				layoutId={`overlay-right-${shader.slug}`}
+				layoutId={`overlay-right-${currentShader.slug}`}
 				initial={false}
 				animate={{opacity: appMode === `fullscreen` ? 1 : 0}}
 				transition={transition}
@@ -89,13 +94,13 @@ const ShaderDisplay: FC<Props> = ({children, rounded = false, hideAuthor = false
 						<Link href="https://www.brandontsang.net/" target="_blank" className="underline">
 							Brandon Tsang
 						</Link>
-						{` `}on {shader.date}.
+						{` `}on {currentShader.date}.
 					</p>
 				</div>
 			</motion.div>
 
 			<motion.div
-				layoutId={`overlay-switcher-button-${shader.slug}`}
+				layoutId={`overlay-switcher-button-${currentShader.slug}`}
 				initial={false}
 				animate={{opacity: appMode === `fullscreen` ? 1 : 0}}
 				transition={transition}

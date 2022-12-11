@@ -2,11 +2,11 @@
 
 import clsx from "clsx"
 
-import type {ReactElement} from "react"
+import type {FC} from "react"
 
 import useDescriptionStore from "~/stores/useDescriptionStore"
 
-const ScrollProgress = (): ReactElement | null => {
+const ScrollProgress: FC = () => {
 	const sectionInfo = useDescriptionStore((state) => state.sectionInfo)
 
 	return (

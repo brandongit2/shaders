@@ -15,7 +15,9 @@ type Props = {
 const ShaderLayout: FC<Props> = ({children}) => {
 	const appMode = useMainStore((state) => state.appMode)
 	const prevAppMode = useMainStore((state) => state.prevAppMode)
+	const currentShaderIndex = useMainStore((state) => state.currentShaderIndex)
 
+	if (currentShaderIndex === null) return <>{children}</>
 	return (
 		<div className="relative h-full">
 			{appMode === `fullscreen` && (

@@ -27,8 +27,8 @@ export type MainStore = {
 	screenWidth: number
 	setScreenWidth: (width: number) => void
 
-	shader: Shader | null
-	setShader: (shader: Shader) => void
+	currentShaderIndex: number | null
+	setCurrentShader: (index: number) => void
 }
 
 export type DescriptionStore = {

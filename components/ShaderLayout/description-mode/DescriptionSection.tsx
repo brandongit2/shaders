@@ -5,7 +5,7 @@ import {useCallback} from "react"
 import {useInView} from "react-intersection-observer"
 import {mergeRefs} from "react-merge-refs"
 
-import type {ReactElement, ReactNode} from "react"
+import type {ReactNode, FC} from "react"
 
 import useDescriptionStore from "~/stores/useDescriptionStore"
 
@@ -15,7 +15,7 @@ type Props = {
 	last?: boolean
 }
 
-const DescriptionSection = ({children, name, last}: Props): ReactElement | null => {
+const DescriptionSection: FC<Props> = ({children, name, last}) => {
 	const setSectionInfo = useDescriptionStore((state) => state.setSectionInfo)
 
 	const {ref: interesectionRef, inView} = useInView({

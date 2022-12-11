@@ -15,14 +15,12 @@ type Props = {
 }
 
 const ShaderPage: FC<Props> = ({params}) => {
-	const setShader = useMainStore((state) => state.setShader)
-	const shader = shaderList.find((shader) => shader.slug === params.shader)!
+	const setCurrentShader = useMainStore((state) => state.setCurrentShader)
+	const shader = shaderList.findIndex((shader) => shader.slug === params.shader)!
 
-	useEffect(() => {
-		setShader(shader)
-	}, [setShader, shader])
+	useEffect(() => void setCurrentShader(shader), [setCurrentShader, shader])
 
-	return <Canvas fragmentShader={shader.fragmentShader} />
+	return <Canvas fragmentShader={shaderList[shader]!.fragmentShader} />
 }
 
 export default ShaderPage

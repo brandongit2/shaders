@@ -17,8 +17,8 @@ const useMainStore = create<MainStore>((set, get) => ({
 	screenWidth: 0,
 	setScreenWidth: (width) => void set({screenWidth: width}),
 
-	shader: null,
-	setShader: (shader) => void set({shader}),
+	currentShaderIndex: null,
+	setCurrentShader: (index) => void set({currentShaderIndex: index}),
 }))
 
 export default useMainStore

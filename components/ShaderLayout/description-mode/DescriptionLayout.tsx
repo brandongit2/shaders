@@ -1,7 +1,12 @@
+"use client"
+
+import invariant from "ts-invariant"
+
 import type {FC, ReactNode} from "react"
 
 import Description from "./Description"
 import ScrollProgress from "./ScrollProgress"
+import shaderList from "~/shaders/shaderList"
 import useMainStore from "~/stores/useMainStore"
 
 type Props = {
@@ -9,7 +14,9 @@ type Props = {
 }
 
 const DescriptionLayout: FC<Props> = ({children}) => {
-	const shader = useMainStore((state) => state.shader)
+	const currentShaderIndex = useMainStore((state) => state.currentShaderIndex)
+	invariant(currentShaderIndex !== null, `currentShaderIndex is null`)
+	const currentShader = shaderList[currentShaderIndex]!
 
 	return (
 		<div className="mx-auto grid h-full max-w-4xl gap-6 p-2 max-md:grid-rows-[min(100vw,50vh)_auto] md:grid-cols-2 md:p-6">
@@ -19,7 +26,7 @@ const DescriptionLayout: FC<Props> = ({children}) => {
 				<div className="grid place-items-center">
 					<ScrollProgress />
 				</div>
-				<Description>{shader?.description}</Description>
+				<Description>{currentShader.description}</Description>
 			</div>
 		</div>
 	)

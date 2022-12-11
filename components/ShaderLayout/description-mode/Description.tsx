@@ -6,7 +6,7 @@ import clsx from "clsx"
 import Link from "next/link"
 import {useCallback, useEffect} from "react"
 
-import type {ReactElement, ReactNode} from "react"
+import type {ReactNode, FC} from "react"
 
 import useDescriptionStore from "~/stores/useDescriptionStore"
 
@@ -17,7 +17,7 @@ type Props = {
 	children: ReactNode
 }
 
-const Description = ({children}: Props): ReactElement | null => {
+const Description: FC<Props> = ({children}) => {
 	const [descriptionPaddingTop, descriptionPaddingBottom] = useDescriptionStore((state) => state.descriptionPadding)
 	const setDescriptionPaddingTop = useDescriptionStore((state) => state.setDescriptionPaddingTop)
 	const setDescriptionPaddingBottom = useDescriptionStore((state) => state.setDescriptionPaddingBottom)
@@ -37,7 +37,7 @@ const Description = ({children}: Props): ReactElement | null => {
 	useEffect(() => {
 		updateDescriptionPadding()
 		window.addEventListener(`resize`, updateDescriptionPadding)
-		return () => window.removeEventListener(`resize`, updateDescriptionPadding)
+		return () => void window.removeEventListener(`resize`, updateDescriptionPadding)
 	}, [updateDescriptionPadding])
 
 	return (
