@@ -66,8 +66,6 @@ const SwitcherItem: FC<Props> = ({shaderIndex, x, overwriteImage, onClick}) => {
 		}
 	})
 
-	const zIndex = useTransform(u, (val) => -Math.abs(val))
-
 	return (
 		<>
 			<motion.div
@@ -75,7 +73,7 @@ const SwitcherItem: FC<Props> = ({shaderIndex, x, overwriteImage, onClick}) => {
 				style={{
 					transform: useMotionTemplate`translateZ(${translateZ}px) rotateY(${rotation}deg)`,
 					left: useMotionTemplate`calc(50% + ${translateX}px - min(50vw, 30rem) / 2)`,
-					zIndex,
+					zIndex: useTransform(u, (val) => -Math.abs(val) + shaderList.length * itemSeparation),
 				}}
 				onClick={() => void onClick()}
 			>
@@ -86,7 +84,7 @@ const SwitcherItem: FC<Props> = ({shaderIndex, x, overwriteImage, onClick}) => {
 			<motion.div
 				style={{
 					transform: useMotionTemplate`translateX(${translateX}px) translateZ(${translateZ}px) translate(-50%, 100%) scaleY(-1) rotateY(${rotation}deg)`,
-					zIndex: useTransform(zIndex, (val) => val - 1),
+					zIndex: useTransform(u, (val) => -Math.abs(val)),
 				}}
 				className="pointer-events-none absolute left-1/2 h-[min(50vw,30rem)] w-[min(50vw,30rem)] select-none overflow-hidden rounded-[16px] bg-[#222] saturate-[80%] [&>*]:opacity-20"
 			>
