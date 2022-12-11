@@ -22,7 +22,6 @@ const Switcher: FC<Props> = ({children, onXChange}) => {
 	const pathname = usePathname()
 	const router = useRouter()
 	const x = useMotionValue(0)
-	x.onChange(onXChange)
 
 	const currentShaderIndex = useMainStore((state) => state.currentShaderIndex)
 	const beginTransition = useMainStore((state) => state.beginTransition)
@@ -36,6 +35,11 @@ const Switcher: FC<Props> = ({children, onXChange}) => {
 	const screenWidth = useMainStore((state) => state.screenWidth)
 	const itemWidth = Math.min(screenWidth / 2, 30 * 16)
 	const itemSeparation = itemWidth * 0.4
+
+	useEffect(
+		() => x.onChange((val) => onXChange(val - initialShaderIndex * itemSeparation)),
+		[initialShaderIndex, itemSeparation, onXChange, x],
+	)
 
 	useEffect(() => {
 		if (pendingTransition.current) beginTransition(`fullscreen`)
