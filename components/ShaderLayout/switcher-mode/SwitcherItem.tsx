@@ -86,7 +86,7 @@ const SwitcherItem: FC<Props> = ({shaderIndex, x, overwriteImage, onClick}) => {
 					transform: useMotionTemplate`translateX(${translateX}px) translateZ(${translateZ}px) translate(-50%, 100%) scaleY(-1) rotateY(${rotation}deg)`,
 					zIndex: useTransform(u, (val) => -Math.abs(val)),
 				}}
-				className="pointer-events-none absolute left-1/2 h-[min(50vw,30rem)] w-[min(50vw,30rem)] select-none overflow-hidden rounded-[16px] bg-[#222] saturate-[80%] [&>*]:opacity-20"
+				className="pointer-events-none absolute left-1/2 h-[min(50vw,30rem)] w-[min(50vw,30rem)] select-none overflow-hidden rounded-[16px] bg-[#111] saturate-[80%] [&>*]:opacity-20"
 			>
 				{shaderList[shaderIndex]!.image}
 			</motion.div>

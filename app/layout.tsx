@@ -39,7 +39,7 @@ const RootLayout: FC<Props> = ({children}) => {
 			</head>
 			<body
 				className="h-full text-white transition-[background-color]"
-				style={{background: appMode === `switcher` ? `#222` : `#22074a`, transitionDuration: `${transition.duration}s`}}
+				style={{background: appMode === `switcher` ? `#111` : `#22074a`, transitionDuration: `${transition.duration}s`}}
 			>
 				<ShaderLayout>{children}</ShaderLayout>
 			</body>
