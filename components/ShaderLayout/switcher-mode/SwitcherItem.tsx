@@ -1,13 +1,14 @@
 "use client"
 
 import {motion, useMotionTemplate, useTransform} from "framer-motion"
+import {useRef} from "react"
 
 import type {MotionValue} from "framer-motion"
 import type {ReactElement, ReactNode} from "react"
 
-import shaderList from "../../../shaders/shaderList"
-import useMainStore from "../../../stores/useMainStore"
 import {smoothStep} from "~/helpers/math"
+import shaderList from "~/shaders/shaderList"
+import useMainStore from "~/stores/useMainStore"
 
 type Props = {
 	overwriteImage?: ReactNode
@@ -23,12 +24,14 @@ const SwitcherItem = ({shaderSlug, x, overwriteImage, onClick}: Props): ReactEle
 	const itemWidth = Math.min(screenWidth / 2, 30 * 16)
 	const shader = shaderList.find((shader) => shader.slug === shaderSlug)!
 	const shaderIndex = shaderList.findIndex((shader) => shader.slug === shaderSlug)
+	const currentShader = useMainStore((state) => state.shader)
+	const initialShaderIndex = useRef(shaderList.findIndex((shader) => shader.slug === currentShader?.slug))
 
 	const spinAt = itemWidth * 0.35
 	const itemSeparation = itemWidth * 0.4
 
 	// In pixels. 0 is center of screen, lower is left, greater is right
-	const u = useTransform(x, (val) => val + shaderIndex * itemSeparation)
+	const u = useTransform(x, (val) => val + (shaderIndex - initialShaderIndex.current) * itemSeparation)
 
 	const middleSpace = itemWidth * 0.3
 	const translateX = useTransform(u, (val) => {

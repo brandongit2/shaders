@@ -4,9 +4,10 @@ import type {MainStore} from "../types"
 
 import {transition} from "~/components/ShaderLayout/transition"
 
-const useMainStore = create<MainStore>((set) => ({
+const useMainStore = create<MainStore>((set, get) => ({
 	appMode: `fullscreen`,
 	beginTransition: (to) => {
+		if (get().appMode === to) return
 		set((state) => ({prevAppMode: state.appMode, appMode: to, isTransitioning: true}))
 		setTimeout(() => void set({isTransitioning: false}), transition.duration * 1000)
 	},
