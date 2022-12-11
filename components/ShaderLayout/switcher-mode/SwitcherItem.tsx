@@ -19,7 +19,6 @@ type Props = {
 
 const SwitcherItem = ({shaderSlug, x, overwriteImage, onClick}: Props): ReactElement | null => {
 	const screenWidth = useMainStore((state) => state.screenWidth)
-	const isTransitioning = useMainStore((state) => state.isTransitioning)
 
 	const itemWidth = Math.min(screenWidth / 2, 30 * 16)
 	const shader = shaderList.find((shader) => shader.slug === shaderSlug)!
@@ -67,11 +66,7 @@ const SwitcherItem = ({shaderSlug, x, overwriteImage, onClick}: Props): ReactEle
 		}
 	})
 
-	// There are two groups of z-indexes:
-	// - One from 0 to window.clientWidth / 2 for the reflections
-	// - One from 1000 to 1000 + window.clientWidth / 2 for the main items (lower bound was arbitrary)
-	const zIndexNear = useTransform(u, (val) => -Math.abs(val) + 1000)
-	const zIndexFar = useTransform(u, (val) => -Math.abs(val))
+	const zIndex = useTransform(u, (val) => -Math.abs(val))
 
 	return (
 		<>
@@ -80,7 +75,7 @@ const SwitcherItem = ({shaderSlug, x, overwriteImage, onClick}: Props): ReactEle
 				style={{
 					transform: useMotionTemplate`translateZ(${translateZ}px) rotateY(${rotation}deg)`,
 					left: useMotionTemplate`calc(50% + ${translateX}px - min(50vw, 30rem) / 2)`,
-					zIndex: isTransitioning ? 10000 : zIndexNear,
+					zIndex,
 				}}
 				onClick={() => void onClick()}
 			>
@@ -89,7 +84,7 @@ const SwitcherItem = ({shaderSlug, x, overwriteImage, onClick}: Props): ReactEle
 			<motion.div
 				style={{
 					transform: useMotionTemplate`translateX(${translateX}px) translateZ(${translateZ}px) translate(-50%, 100%) scaleY(-1) rotateY(${rotation}deg)`,
-					zIndex: zIndexFar,
+					zIndex: useTransform(zIndex, (val) => val - 1),
 				}}
 				className="pointer-events-none absolute left-1/2 h-[min(50vw,30rem)] w-[min(50vw,30rem)] select-none overflow-hidden rounded-[16px] bg-[#222] saturate-[80%] [&>*]:opacity-20"
 			>

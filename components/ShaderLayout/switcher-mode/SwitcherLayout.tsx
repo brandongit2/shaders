@@ -48,11 +48,14 @@ const SwitcherLayout: FC<Props> = ({children}) => {
 						x={x}
 						overwriteImage={currentShader?.day === shader.day ? children || <div /> : undefined}
 						onClick={() => {
-							if (
-								!hasDragged.current &&
-								pathname !== `/${shader.slug}/` &&
-								shaderList[activeShader]?.day === shader.day
-							) {
+							if (hasDragged.current) return
+
+							if (pathname === `/${shader.slug}/`) {
+								beginTransition(`fullscreen`)
+								return
+							}
+
+							if (shaderList[activeShader]?.day === shader.day) {
 								router.push(`/${shader.slug}/`)
 								pendingTransition.current = true
 							}
